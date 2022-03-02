@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="261dp"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="377dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="5dp"
+                android:text="title"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:maxLength="60"/>
+
+            <TextView
+                android:id="@+id/textViewCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewTitle"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="28dp"
+                android:background="@color/black"
+                android:text="category"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:textStyle="bold"
+                android:maxLength="20" />
+
+            <TextView
+                android:id="@+id/textViewSubcategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewCategory"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="17dp"
+                android:background="@color/petrol_zomb"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="subcategory"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:textStyle="bold"
+                android:maxLength="20"/>
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewSubcategory"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="18dp"
+                android:text="date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="268dp"
+                android:layout_height="132dp"
+                android:layout_below="@id/textViewTitle"
+                android:layout_marginLeft="60dp"
+                android:layout_toRightOf="@id/textViewCategory"
+                android:ems="12"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:text="description"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/textViewSource"
+                android:layout_width="386dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="18dp"
+                android:text="url" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+
+
+

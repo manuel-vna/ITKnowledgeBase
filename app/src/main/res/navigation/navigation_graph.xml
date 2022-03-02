@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/addEntryFragment"
+        android:name="com.example.itkbproject.AddEntryFragment"
+        android:label="AddEntryFragment" >
+        <action
+            android:id="@+id/action_addEntryFragment_to_contextSearchFragment"
+            app:destination="@id/contextSearchFragment" />
+        <action
+            android:id="@+id/action_addEntryFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_addEntryFragment_to_importExportFragment"
+            app:destination="@id/importExportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contextSearchFragment"
+        android:name="com.example.itkbproject.ContextSearchFragment"
+        android:label="ContextSearchFragment" >
+        <action
+            android:id="@+id/action_contextSearchFragment_to_addEntryFragment"
+            app:destination="@id/addEntryFragment" />
+        <action
+            android:id="@+id/action_contextSearchFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_contextSearchFragment_to_importExportFragment"
+            app:destination="@id/importExportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.itkbproject.MainFragment"
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_addEntryFragment"
+            app:destination="@id/addEntryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_contextSearchFragment"
+            app:destination="@id/contextSearchFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addEntryFragment2"
+            app:destination="@id/addEntryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_importExportFragment"
+            app:destination="@id/importExportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/importExportFragment"
+        android:name="com.example.itkbproject.ImportExportFragment"
+        android:label="ImportExportFragment" >
+        <action
+            android:id="@+id/action_importExportFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_importExportFragment_to_addEntryFragment"
+            app:destination="@id/addEntryFragment" />
+        <action
+            android:id="@+id/action_importExportFragment_to_contextSearchFragment"
+            app:destination="@id/contextSearchFragment" />
+    </fragment>
+</navigation>

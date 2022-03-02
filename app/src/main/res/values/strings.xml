@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Simple KB</string>
+
+    <string name="textViewHeadline">new entry</string>
+    <string name="EditTextTitle">title</string>
+    <string name="buttonShowMorePage">more</string>
+    <string name="buttonAddMenu">Add Entry to Database</string>
+    <string name="buttonAppUpdateMenu">Check for update</string>
+    <string name="buttonExportDbMenuTooltip">The export file will be saved to the apps file folder</string>
+    <string name="TitleSearchCategory">Title</string>
+    <string name="CategorySearchCategory">Category</string>
+    <string name="ButtonAddEntry">Add Entry</string>
+    <string name="ButtonHome">Home</string>
+    <string name="ButtonSearch">Search</string>
+    <string name="ButtonAddEntryMainFragment">Add Entry</string>
+
+
+    <!-- Menu -->
+    <string name="MenuContextSearch">Search within Context</string>
+    <string name="MenuAddEntry">Add Entry</string>
+    <string name="MenuCheckForUpdate">Check for Update</string>
+    <string name="MenuImportExport">Import/Export</string>
+
+
+    <!-- MainFragment -->
+    <string name="MainSearchButtonSearch">Search</string>
+    <string name="MainSearchEditText">search keyword</string>
+    <string name="MainAddEntryButton">Add Entry</string>
+
+
+    <!-- ContextSearchFragment -->
+    <string name="ContextSearchButtonSearch">Search</string>
+    <string name="ContextSearchTitleEditText">title search</string>
+    <string name="ContextSearchCategoryEditText">category search</string>
+    <string name="ContextSearchSubcategoryEditText">subcategory search</string>
+    <string name="ContextSearchDescriptionEditText">description search</string>
+    <string name="ContextSearchDateEditText">date search</string>
+    <string name="ContextSearchButtonToHome">Home</string>
+
+
+    <!-- ImportExportFragment -->
+    <string name="ImportExportButtonImport">Import Database</string>
+    <string name="ImportExportButtonExport">Export Database</string>
+    <string name="ImportExportButtonToHome">Home</string>
+    <string name="ImportExportSwitchPrimaryKey">First Column: Primary Key</string>
+    <string name="ImportExportSwitchPrimaryKeyDescription">When this switch is chosen the first column of the
+        exported data will include the primary key integer of the table.</string>
+    <string name="ImportExportEditTextFilename">file name</string>
+    <string name="ImportExportTextFilenameDescription">Please name here your export file. The file will be placed in your Androids Download folder.</string>
+    <string name="ImportExportButtonStartExport">Start Export</string>
+    <string name="ImportExportRadioButtonCSV">.CSV</string>
+    <string name="ImportExportRadioButtonDB">.DB</string>
+
+
+    <!-- ContextSearchFragment:Sections ??? -->
+    <string-array name="sections_array">
+        <item>Title</item>
+        <item>Category</item>
+        <item>Subcategory</item>
+        <item>Description</item>
+        <item>Date</item>
+    </string-array>
+
+</resources>
