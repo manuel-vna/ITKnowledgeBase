@@ -35,7 +35,7 @@ public class Entry {
         this.id = id;
         this.title = title;
         this.category = category;
-        this.date = String.valueOf(java.time.LocalDate.now());
+        this.date = date;
         this.subcategory = subcategory;
         this.description = description;
         this.source = source;

@@ -133,6 +133,7 @@ public class AddEntryFragment extends Fragment {
         final String description = binding.editTextDescriptionAdd.getText().toString().trim();
         final String subcategory = binding.autoCompleteTextViewSubcategoryAdd.getText().toString().trim();
         final String source = binding.editTextSourceAdd.getText().toString().trim();
+        final String date = String.valueOf(java.time.LocalDate.now());
 
 
         if (title.isEmpty()) {
@@ -152,7 +153,7 @@ public class AddEntryFragment extends Fragment {
         executor.submit(new Runnable(){
             public void run() {
 
-                Entry entry = new Entry(0,title,category,"date",subcategory,description,source);
+                Entry entry = new Entry(0,title,category,date,subcategory,description,source);
                 appDb.entryDao().insertEntry(entry);
 
                 Message msg = handler.obtainMessage();
