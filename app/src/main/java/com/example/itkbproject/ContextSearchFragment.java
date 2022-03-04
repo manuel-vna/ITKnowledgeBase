@@ -2,8 +2,6 @@ package com.example.itkbproject;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -21,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +27,6 @@ import com.example.itkbproject.databinding.ContextsearchFragmentBinding;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 
 public class ContextSearchFragment extends Fragment {
@@ -38,7 +34,7 @@ public class ContextSearchFragment extends Fragment {
     private MainViewModel mViewModel;
     private ContextsearchFragmentBinding binding;
     private EntryAdapter adapter;
-    final Calendar myCalendar= Calendar.getInstance();
+    private Calendar dateFromCalendar;
 
     public static ContextSearchFragment newInstance() {
         return new ContextSearchFragment();
@@ -61,8 +57,10 @@ public class ContextSearchFragment extends Fragment {
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
         setHasOptionsMenu(true);
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -76,13 +74,14 @@ public class ContextSearchFragment extends Fragment {
             @Override
             public void onChanged(List<Entry> entryList) {
 
-                AutoCompleteEntryAdapter adapter = new AutoCompleteEntryAdapter(getContext(), entryList);
+                AutoCompleteCategoryAdapter adapter = new AutoCompleteCategoryAdapter(getContext(), entryList);
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) binding.ContextSearchCategoryEditText;
                 adapter.getFilter().filter(autoCompleteTextView.getText().toString());
                 autoCompleteTextView.setAdapter(adapter);
             }
         });
     }
+
 
     private void clearFields(String spinner_selection){
         switch(spinner_selection) {
@@ -94,6 +93,8 @@ public class ContextSearchFragment extends Fragment {
                 break;
             case "Description": binding.ContextSearchDescriptionEditText.setText("");
                 break;
+
+                //TBD: Date
         }
     }
 
@@ -119,6 +120,10 @@ public class ContextSearchFragment extends Fragment {
                     binding.ContextSearchCategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchSubcategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchDescriptionEditText.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateTo.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateTo.setVisibility(View.GONE);
 
                 }
                 else if (spinner.getSelectedItem().toString().equals("Category")) {
@@ -126,6 +131,10 @@ public class ContextSearchFragment extends Fragment {
                     binding.ContextSearchCategoryEditText.setVisibility(View.VISIBLE);
                     binding.ContextSearchSubcategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchDescriptionEditText.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateTo.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateTo.setVisibility(View.GONE);
 
                 }
                 else if (spinner.getSelectedItem().toString().equals("Subcategory")){
@@ -133,22 +142,33 @@ public class ContextSearchFragment extends Fragment {
                     binding.ContextSearchCategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchSubcategoryEditText.setVisibility(View.VISIBLE);
                     binding.ContextSearchDescriptionEditText.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateTo.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateTo.setVisibility(View.GONE);
+
                 }
                 else if (spinner.getSelectedItem().toString().equals("Description")){
                     binding.ContextSearchTitleEditText.setVisibility(View.GONE);
                     binding.ContextSearchCategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchSubcategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchDescriptionEditText.setVisibility(View.VISIBLE);
+                    binding.ContextSearchPickerDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateTo.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateTo.setVisibility(View.GONE);
                 }
-                else if (spinner.getSelectedItem().toString().equals("Date")){
+
+                else if (spinner.getSelectedItem().toString().equals("Date")) {
                     binding.ContextSearchTitleEditText.setVisibility(View.GONE);
                     binding.ContextSearchCategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchSubcategoryEditText.setVisibility(View.GONE);
                     binding.ContextSearchDescriptionEditText.setVisibility(View.GONE);
-                    binding.ContextSearchEditTextDateFrom.setVisibility(View.VISIBLE);
-                    binding.ContextSearchEditTextDateTo.setVisibility(View.VISIBLE);
+                    binding.ContextSearchPickerDateFrom.setVisibility(View.VISIBLE);
+                    binding.ContextSearchTextViewDateFrom.setVisibility(View.VISIBLE);
+                    binding.ContextSearchPickerDateTo.setVisibility(View.VISIBLE);
+                    binding.ContextSearchTextViewDateTo.setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override
@@ -191,25 +211,10 @@ public class ContextSearchFragment extends Fragment {
                 return true;
             }
         });
-
-        binding.ContextSearchEditTextDateFrom.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                mViewModel.findTitle(binding.ContextSearchEditTextDateFrom.getText().toString());
-                closeKeyboard();
-                return true;
-            }
-        });
-
-        binding.ContextSearchEditTextDateTo.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                mViewModel.findTitle(binding.ContextSearchEditTextDateTo.getText().toString());
-                closeKeyboard();
-                return true;
-            }
-        });
+        //Click Listener: Date - TBD
 
 
-        // Butto Listener
+        // Button Listener
 
         binding.ContextSearchButtonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,48 +223,48 @@ public class ContextSearchFragment extends Fragment {
                 if (spinner.getSelectedItem().toString().equals("Title")) {
                     mViewModel.findTitle(binding.ContextSearchTitleEditText.getText().toString());
                     clearFields("Title");
-                }
-                else if (spinner.getSelectedItem().toString().equals("Category")) {
+                } else if (spinner.getSelectedItem().toString().equals("Category")) {
                     mViewModel.findCategory(binding.ContextSearchCategoryEditText.getText().toString());
                     clearFields("Category");
-                }
-                else if(spinner.getSelectedItem().toString().equals("Subcategory")) {
+                } else if (spinner.getSelectedItem().toString().equals("Subcategory")) {
                     mViewModel.findSubcategory(binding.ContextSearchSubcategoryEditText.getText().toString());
                     clearFields("Subcategory");
-                }
-                else if(spinner.getSelectedItem().toString().equals("Description")) {
+                } else if (spinner.getSelectedItem().toString().equals("Description")) {
                     mViewModel.findDescription(binding.ContextSearchDescriptionEditText.getText().toString());
                     clearFields("Description");
                 }
                 else if(spinner.getSelectedItem().toString().equals("Date")) {
 
-                    /*
-                    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int month, int day) {
-                            myCalendar.set(Calendar.YEAR, year);
-                            myCalendar.set(Calendar.MONTH, month);
-                            myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                    binding.ContextSearchPickerDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchPickerDateTo.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateFrom.setVisibility(View.GONE);
+                    binding.ContextSearchTextViewDateTo.setVisibility(View.GONE);
 
-                            String myFormat="MM/dd/yy";
-                            SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
-                            binding.ContextSearchEditTextDateFrom.setText(dateFormat.format(myCalendar.getTime()));
-                        }
-                    };
-                    binding.ContextSearchEditTextDateFrom.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                        }
-                    });
-                     */
+                    //get dates from calender
+                    Calendar dateFromCalendar = Calendar.getInstance();
+                    Calendar dateToCalendar = Calendar.getInstance();
 
-                    mViewModel.findDate(binding.ContextSearchEditTextDateFrom.getText().toString(),
-                            binding.ContextSearchEditTextDateTo.getText().toString());
+                    dateFromCalendar.set(binding.ContextSearchPickerDateFrom.getYear(),binding.ContextSearchPickerDateFrom.getMonth(),
+                            binding.ContextSearchPickerDateFrom.getDayOfMonth());
+                    SimpleDateFormat formatFromDate = new SimpleDateFormat("yyyy-MM-dd");
+                    String FromDate = formatFromDate.format(dateFromCalendar.getTime());
+                    //binding.ContextSearchTextViewDateFrom.setText(FromDate);
+
+                    dateToCalendar.set(binding.ContextSearchPickerDateTo.getYear(),binding.ContextSearchPickerDateTo.getMonth(),
+                            binding.ContextSearchPickerDateTo.getDayOfMonth());
+                    SimpleDateFormat formatToDate = new SimpleDateFormat("yyyy-MM-dd");
+                    String ToDate = formatToDate.format(dateToCalendar.getTime());
+                    //binding.ContextSearchTextViewDateTo.setText(ToDate);
+
+                    mViewModel.findDate(FromDate,ToDate);
 
                 }
-                closeKeyboard();
+                else {
+                    Toast.makeText(getContext(), "Selection didn't work",
+                            Toast.LENGTH_LONG).show();
+                }
 
+                closeKeyboard();
             }
         });
 
@@ -322,10 +327,14 @@ public class ContextSearchFragment extends Fragment {
         });
     }
 
-    private void closeKeyboard(){
-        InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+    private void closeKeyboard() {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            Log.d("Debug_A", String.valueOf("Keyboard closing Error: No keyboard was present on screen"));
+        }
     }
 
 }

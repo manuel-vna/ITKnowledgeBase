@@ -12,15 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
-public class AutoCompleteEntryAdapter extends ArrayAdapter<Entry> {
+public class AutoCompleteCategoryAdapter extends ArrayAdapter<Entry> {
     private List<Entry> allEntrysList;
     private List<Entry> filteredEntrysList;
     private List<String> filteredListOfCategories; //used to avoid duplicates in the suggestions array
 
-    public AutoCompleteEntryAdapter(@NonNull Context context, @NonNull List<Entry> entryList) {
+    public AutoCompleteCategoryAdapter(@NonNull Context context, @NonNull List<Entry> entryList) {
         super(context, 0, entryList);
 
         allEntrysList = new ArrayList<>(entryList);

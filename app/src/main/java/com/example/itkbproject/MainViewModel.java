@@ -42,7 +42,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public void findDescription(String description) {entryRepository.findDescription(description); }
 
-    public void findDate(String dateFrom,String dateTo) {entryRepository.findDate(dateFrom,dateTo); }
+    public void findDate(String dateFrom,String dateTo) {entryRepository.findDate(dateFrom,dateTo); } //TBD
 
     public LiveData<List<Entry>> getEntryLiveData() {
         return entryLiveData;

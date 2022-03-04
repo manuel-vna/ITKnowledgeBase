@@ -35,6 +35,8 @@
     <string name="ContextSearchSubcategoryEditText">subcategory search</string>
     <string name="ContextSearchDescriptionEditText">description search</string>
     <string name="ContextSearchDateEditText">date search</string>
+    <string name="ContextSearchTextViewDateFrom">Start Date</string>
+    <string name="ContextSearchTextViewDateTo">End Date</string>
     <string name="ContextSearchButtonToHome">Home</string>
 
 
@@ -49,7 +51,7 @@
     <string name="ImportExportTextFilenameDescription">Please name here your export file. The file will be placed in your Androids Download folder.</string>
     <string name="ImportExportButtonStartExport">Start Export</string>
     <string name="ImportExportRadioButtonCSV">.CSV</string>
-    <string name="ImportExportRadioButtonDB">.DB</string>
+    <string name="ImportExportRadioButtonDB">TBD</string>
 
 
     <!-- ContextSearchFragment:Sections ??? -->

@@ -19,30 +19,8 @@ public class MainActivity extends AppCompatActivity { //implements SubcategorySe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-
-        /* //spinner:
-        MainViewModel mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        mainViewModel.getEntryLiveData().observe(this, new Observer<List<Entry>>() {
-
-            @Override
-            public void onChanged(List<Entry> entryList) {
-
-
-                AutoCompleteEntryAdapter adapter = new AutoCompleteEntryAdapter(MainActivity.this, entryList);
-                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MainActivity.this.findViewById(
-                        R.id.autoCompleteTextViewSearch
-                );
-                adapter.getFilter().filter(autoCompleteTextView.getText().toString());
-                autoCompleteTextView.setAdapter(adapter);
-
-            }
-        });**/
     }
 
-
-    //@Override
-    //public void onFragmentInteraction(Uri uri) {
-    //}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

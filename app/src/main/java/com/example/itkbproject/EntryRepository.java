@@ -87,7 +87,7 @@ public class EntryRepository {
     public void findDate(String dateFrom,String dateTo){
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
-            results = entryDao.findDate(dateFrom,dateTo);
+            results = entryDao.findDate(dateFrom,dateTo); //TBD
             handler.sendEmptyMessage(0);
 
         });

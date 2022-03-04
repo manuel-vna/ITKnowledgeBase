@@ -1,9 +1,6 @@
 package com.example.itkbproject;
 
 
-import static android.view.Gravity.CENTER;
-
-import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -85,7 +82,7 @@ public class AddEntryFragment extends Fragment {
             @Override
             public void onChanged(List<Entry> entryList) {
 
-                AutoCompleteEntryAdapter adapter = new AutoCompleteEntryAdapter(getContext(), entryList);
+                AutoCompleteCategoryAdapter adapter = new AutoCompleteCategoryAdapter(getContext(), entryList);
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) binding.autoCompleteTextViewCategoryAdd;
                 adapter.getFilter().filter(autoCompleteTextView.getText().toString());
                 autoCompleteTextView.setAdapter(adapter);

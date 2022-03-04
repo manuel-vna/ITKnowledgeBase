@@ -3,7 +3,6 @@ package com.example.itkbproject;
 
 import static java.lang.Math.toIntExact;
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
@@ -25,12 +24,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.example.itkbproject.databinding.ImportExportFragmentBinding;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +58,6 @@ public class ImportExportFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = ImportExportFragmentBinding.inflate(inflater,container,false);
         return binding.getRoot();
-        //binding2 = PopupExportBinding.inflate(inflater,container,false);
 
     }
 
@@ -174,26 +169,8 @@ public class ImportExportFragment extends Fragment {
         else {
             Toast.makeText(getContext(), "Permission 'Read Storage' granted", Toast.LENGTH_SHORT).show();
         }
-
-                /*
-                @Override
-                public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-                {
-                    super.onRequestPermissionsResult(requestCode,
-                            permissions,
-                            grantResults);
-
-                    if (requestCode == 101) {
-                        if (grantResults.length > 0
-                                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(getContext(), "Storage Permission Granted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Storage Permission Denied", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                 */
     }
+
 
     private void importDb() {
         binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
@@ -258,7 +235,6 @@ public class ImportExportFragment extends Fragment {
 
                             while(inputStream.hasNext()){
                                 String line= inputStream.next();
-                                //line.replaceAll("\\r", "");
                                 String[] values = line.split(";");
                                 lines.add(Arrays.asList(values));
 
@@ -272,10 +248,6 @@ public class ImportExportFragment extends Fragment {
                                     binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
                                     binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
                                 }
-
-                                //Log.d("Debug_A", "ProgressLine: "+String.valueOf(progressStatusImport));
-                                //Log.d("Debug_A", "ProgressMax: "+String.valueOf(progressBarImport.getMax()));
-
 
                                 LastDbId += 1;
 
@@ -293,7 +265,7 @@ public class ImportExportFragment extends Fragment {
                                         Arrays.asList(values).get(3),
                                         Arrays.asList(values).get(4));
 
-                                //appDb.entryDao().insertEntry(entry);
+                                appDb.entryDao().insertEntry(entry);
                                 //Log.d("Debug_A", String.valueOf(entry));
 
                                 try {
@@ -398,30 +370,8 @@ public class ImportExportFragment extends Fragment {
 
                         if (binding.ImportExportRadioButtonDB.isChecked()) {
 
-
-                            try
-                            {
-                                File sd = Environment.getExternalStorageDirectory();
-                                File data = Environment.getDataDirectory();
-
-                                String currentDBPath = "//data//"+packageName+"//databases//"+dbName;
-                                String backupDBPath = "//Download//export_db_file1.db";
-
-                                File currentDB = new File(data, currentDBPath);
-                                File backupDB = new File(sd, backupDBPath);
-
-                                FileChannel src = new FileInputStream(currentDB).getChannel();
-                                FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                                dst.transferFrom(src, 0, src.size());
-                                src.close();
-                                dst.close();
-                            }
-                            catch (Exception e) {
-                                Log.d("Debug_A", String.valueOf(e));
-                            }
-
+                            //TBD
                         }
-
 
                     }
                 });
