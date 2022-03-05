@@ -34,6 +34,8 @@ public class ContextSearchFragment extends Fragment {
     private MainViewModel mViewModel;
     private ContextsearchFragmentBinding binding;
     private EntryAdapter adapter;
+    private EntryAdapter adapterCategory;
+    private EntryAdapter adapterSubcategory;
     private Calendar dateFromCalendar;
 
     public static ContextSearchFragment newInstance() {
@@ -74,10 +76,17 @@ public class ContextSearchFragment extends Fragment {
             @Override
             public void onChanged(List<Entry> entryList) {
 
-                AutoCompleteCategoryAdapter adapter = new AutoCompleteCategoryAdapter(getContext(), entryList);
-                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) binding.ContextSearchCategoryEditText;
-                adapter.getFilter().filter(autoCompleteTextView.getText().toString());
-                autoCompleteTextView.setAdapter(adapter);
+                AutoCompleteCategoryAdapter adapterCategory = new AutoCompleteCategoryAdapter(getContext(), entryList);
+                AutoCompleteTextView autoCompleteTextViewCategory = (AutoCompleteTextView) binding.ContextSearchCategoryEditText;
+                adapterCategory.getFilter().filter(autoCompleteTextViewCategory.getText().toString());
+                autoCompleteTextViewCategory.setThreshold(3);
+                autoCompleteTextViewCategory.setAdapter(adapterCategory);
+
+                AutoCompleteSubcategoryAdapter adapterSubcategory = new AutoCompleteSubcategoryAdapter(getContext(), entryList);
+                AutoCompleteTextView autoCompleteTextViewSubcategory = (AutoCompleteTextView) binding.ContextSearchSubcategoryEditText;
+                adapterSubcategory.getFilter().filter(autoCompleteTextViewSubcategory.getText().toString());
+                autoCompleteTextViewSubcategory.setThreshold(3);
+                autoCompleteTextViewSubcategory.setAdapter(adapterSubcategory);
             }
         });
     }
