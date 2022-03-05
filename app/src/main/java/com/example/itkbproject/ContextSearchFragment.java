@@ -26,6 +26,7 @@ import com.example.itkbproject.databinding.ContextsearchFragmentBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -286,9 +287,7 @@ public class ContextSearchFragment extends Fragment {
 
                 binding.ContextSearchTextViewNoOfHits.setVisibility(View.GONE);
                 binding.ContextSearchButtonClear.setVisibility(View.GONE);
-
-                Toast.makeText(getContext(), "TBD: clear RecyclerView",
-                        Toast.LENGTH_LONG).show();
+                adapter.setEntryList(Collections.<Entry>emptyList());
             }
         });
 
