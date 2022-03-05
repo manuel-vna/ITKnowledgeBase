@@ -38,6 +38,7 @@
     <string name="ContextSearchTextViewDateFrom">Start Date</string>
     <string name="ContextSearchTextViewDateTo">End Date</string>
     <string name="ContextSearchButtonToHome">Home</string>
+    <string name="ContextSearchButtonClear">Clear</string>
 
 
     <!-- ImportExportFragment -->
