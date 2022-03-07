@@ -306,6 +306,10 @@ public class ContextSearchFragment extends Fragment {
             case R.id.menuAdd:
                 Navigation.findNavController(getView()).navigate(R.id.action_contextSearchFragment_to_addEntryFragment);
                 return true;
+            case R.id.menuImportExport:
+                Navigation.findNavController(getView()).navigate(R.id.action_contextSearchFragment_to_importExportFragment);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
