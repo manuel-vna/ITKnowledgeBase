@@ -210,22 +210,13 @@ public class ImportExportFragment extends Fragment {
                             Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize)));
 
 
-                            /*
-                            try {
-                                progressBarImport.setMax(toIntExact(inputFileSize));
+                            binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
+                            binding.ImportExportProgressTextViewImport.setVisibility(View.VISIBLE);
 
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                                Log.d("Debug_A", String.valueOf(e));
-                            }
-                             */
+                            progressBarImport = binding.ImportExportProgressBarImport;
+                            ViewProgressImport = binding.ImportExportProgressTextViewImport;
 
-
-                        //}
-                    //}
-                //});
-
+                            progressBarImport.setMax(toIntExact(inputFileSize));
 
 
                             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -247,7 +238,7 @@ public class ImportExportFragment extends Fragment {
                                             lines.add(Arrays.asList(values));
 
 
-                                            /*
+
                                             //progressBar
                                             progressStatusImport += line.getBytes().length; //toIntExact(line.getBytes().length);
                                             progressBarImport.setProgress(toIntExact(line.getBytes().length));
@@ -257,7 +248,7 @@ public class ImportExportFragment extends Fragment {
                                                 binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
                                                 binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
                                             }
-                                            */
+
 
                                             LastDbId += 1;
 
@@ -275,7 +266,8 @@ public class ImportExportFragment extends Fragment {
                                                     Arrays.asList(values).get(3),
                                                     Arrays.asList(values).get(4));
 
-                                            appDb.entryDao().insertEntry(entry);
+                                            //appDb.entryDao().insertEntry(entry);
+
                                             //Log.d("Debug_A", String.valueOf(entry));
 
                                             try {
