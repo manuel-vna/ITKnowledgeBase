@@ -1,17 +1,16 @@
 # ItKbProject
 IT Knowledge Base Project
 
-### Functionality
 
-This app provides a simple IT Knowledge Database. Information you don't want to forget can be saved and organised by the usage of five data fields:
+This apppication provides a simple IT Knowledge Database. Information you don't want to forget can be saved and organised by the usage of five data fields:
 Title, Category, Subcategory, Description and Source.
-You can save, edit and delete entries. Searching can be done by a general keyword or within one of the above fields specifically including a date search.
+You can save, edit and delete knowledge entries. Searching can be done by a general keyword or within one of the above fields specifically, including a search by the saving date of the entry.
 
 <br>
 
 ### Objective
 
-This project appreciates being used in practice but it was also built in a learning context. It covers specific areas of Android programming and tries to implement these in a good manner. These areas are:
+The app was built in a learning context. This means besides its use case it covers specific learning aspects within the world of Android programming which it tires to implement in a good manner by using the latest methods and frameworks. These areas are:
 
 - #### Saving data in a local database
 Persistence Room library, Dao
@@ -34,7 +33,7 @@ Data Dinding, View Model, Repository
 <br>
 
 ### Decisions
-When implementing the app, a few decisions were taken that could have resulted elsewhere. Noteworthy decisions are listed here:
+When implementing the app a few decisions were taken that could have resulted elsewhere. Noteworthy decisions are listed here:
 
 - #### Escaping
 The databse serves the principle filtering data on input and escaping data on output
