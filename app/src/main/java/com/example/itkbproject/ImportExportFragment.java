@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -202,13 +200,10 @@ public class ImportExportFragment extends Fragment {
                             String path_substring = uri.getPath().substring(14);
                             File file= new File(path_substring);
 
-                            Log.d("Debug_A", "file.length(): "+String.valueOf(file.length()));
-
                             List<List<String>> lines = new ArrayList<>();
 
                             inputFileSize = file.length();
                             Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize)));
-
 
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
                             binding.ImportExportProgressTextViewImport.setVisibility(View.VISIBLE);
@@ -295,8 +290,6 @@ public class ImportExportFragment extends Fragment {
 
 
 
-
-
         binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -304,112 +297,14 @@ public class ImportExportFragment extends Fragment {
                 //Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 Intent data = new Intent(Intent.ACTION_GET_CONTENT);
                 data.addCategory(Intent.CATEGORY_OPENABLE);
+                String [] mimeTypes = {"text/csv", "text/comma-separated-values"};
                 data.setType("*/*");
+                data.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                 data = Intent.createChooser(data, "Choose a file");
                 sActivityResultLauncher.launch(data);
             }
         });
-
-
     }
-
-
-
-                 /*
-
-                binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
-                binding.ImportExportProgressTextViewImport.setVisibility(View.VISIBLE);
-
-                progressBarImport = binding.ImportExportProgressBarImport;
-                ViewProgressImport = binding.ImportExportProgressTextViewImport;
-
-                //String pathname = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                //pathname += "/db-export3.csv";
-
-                //File file= new File(pathname);
-                File file= new File(uri.getPath());
-
-
-                List<List<String>> lines = new ArrayList<>();
-
-                inputFileSize = file.length();
-                Log.d("Debug_A", "inputFileSize: "+String.valueOf(inputFileSize));
-
-                progressBarImport.setMax(toIntExact(inputFileSize));
-
-
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.submit(new Runnable() {
-                    public void run() {
-
-
-                        Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
-                        cursor.moveToLast();
-                        LastDbId = cursor.getCount();
-                        //Log.d("Debug_A", "Database Last Line: "+String.valueOf(cursor.getCount()));
-
-                        try{
-                            inputStream = new Scanner(file);
-
-                            while(inputStream.hasNext()){
-                                String line= inputStream.next();
-                                String[] values = line.split(";");
-                                lines.add(Arrays.asList(values));
-
-
-                                //progressBar
-                                progressStatusImport += line.getBytes().length; //toIntExact(line.getBytes().length);
-                                progressBarImport.setProgress(toIntExact(line.getBytes().length));
-                                ViewProgressImport.setText(progressStatusImport+"/"+progressBarImport.getMax()+" Bytes");
-                                ImportProgressThreshold = inputFileSize-((inputFileSize/100.0)*10); // Invisible-Threshold: 90% of max
-                                if (progressStatusImport >= ImportProgressThreshold){
-                                    binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
-                                    binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
-                                }
-
-                                LastDbId += 1;
-
-                                if (Arrays.asList(values).size() < 5){
-                                    Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
-                                    continue;
-                                }
-
-
-                                Entry entry = new Entry(LastDbId,
-                                        Arrays.asList(values).get(0),
-                                        Arrays.asList(values).get(1),
-                                        null,
-                                        Arrays.asList(values).get(2),
-                                        Arrays.asList(values).get(3),
-                                        Arrays.asList(values).get(4));
-
-                                appDb.entryDao().insertEntry(entry);
-                                //Log.d("Debug_A", String.valueOf(entry));
-
-                                try {
-                                    Thread.sleep(2100);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-
-                            inputStream.close();
-                        }
-                        catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Log.d("Debug_A", String.valueOf(e));
-
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-
- */
 
 
 
