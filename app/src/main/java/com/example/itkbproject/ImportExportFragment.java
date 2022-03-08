@@ -54,7 +54,7 @@ public class ImportExportFragment extends Fragment {
     public static String dbName;
     private Integer LastDbId = 0;
     private Scanner inputStream;
-    private Long inputFileSize;
+    private long inputFileSize;
     private ProgressBar progressBarImport;
     private int progressStatusImport = 0;
     private TextView ViewProgressImport;
@@ -198,23 +198,34 @@ public class ImportExportFragment extends Fragment {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             Uri uri = data.getData();
-                            File file= new File(uri.getPath());
 
+                            String path_substring = uri.getPath().substring(14);
+                            File file= new File(path_substring);
 
-                            Log.d("Debug_A", String.valueOf(file.lastModified()));
-
-                        }
-                    }
-                });
-
-                            /*
+                            Log.d("Debug_A", "file.length(): "+String.valueOf(file.length()));
 
                             List<List<String>> lines = new ArrayList<>();
 
                             inputFileSize = file.length();
-                            Log.d("Debug_A", "inputFileSize: "+String.valueOf(inputFileSize));
+                            Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize)));
 
-                            progressBarImport.setMax(toIntExact(inputFileSize));
+
+                            /*
+                            try {
+                                progressBarImport.setMax(toIntExact(inputFileSize));
+
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                                Log.d("Debug_A", String.valueOf(e));
+                            }
+                             */
+
+
+                        //}
+                    //}
+                //});
+
 
 
                             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -236,6 +247,7 @@ public class ImportExportFragment extends Fragment {
                                             lines.add(Arrays.asList(values));
 
 
+                                            /*
                                             //progressBar
                                             progressStatusImport += line.getBytes().length; //toIntExact(line.getBytes().length);
                                             progressBarImport.setProgress(toIntExact(line.getBytes().length));
@@ -245,6 +257,7 @@ public class ImportExportFragment extends Fragment {
                                                 binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
                                                 binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
                                             }
+                                            */
 
                                             LastDbId += 1;
 
@@ -257,7 +270,7 @@ public class ImportExportFragment extends Fragment {
                                             Entry entry = new Entry(LastDbId,
                                                     Arrays.asList(values).get(0),
                                                     Arrays.asList(values).get(1),
-                                                    null,
+                                                    String.valueOf(java.time.LocalDate.now()),
                                                     Arrays.asList(values).get(2),
                                                     Arrays.asList(values).get(3),
                                                     Arrays.asList(values).get(4));
@@ -289,7 +302,7 @@ public class ImportExportFragment extends Fragment {
                 });
 
 
-      */
+
 
 
         binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
