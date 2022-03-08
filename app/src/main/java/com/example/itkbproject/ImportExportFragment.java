@@ -200,9 +200,14 @@ public class ImportExportFragment extends Fragment {
                             Uri uri = data.getData();
                             File file= new File(uri.getPath());
 
-                            Log.d("Debug_A", String.valueOf(file.isFile()));
 
+                            Log.d("Debug_A", String.valueOf(file.lastModified()));
 
+                        }
+                    }
+                });
+
+                            /*
 
                             List<List<String>> lines = new ArrayList<>();
 
@@ -284,15 +289,19 @@ public class ImportExportFragment extends Fragment {
                 });
 
 
+      */
+
+
         binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                //Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+                data.addCategory(Intent.CATEGORY_OPENABLE);
                 data.setType("*/*");
                 data = Intent.createChooser(data, "Choose a file");
                 sActivityResultLauncher.launch(data);
-
             }
         });
 
