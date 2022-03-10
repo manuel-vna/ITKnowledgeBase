@@ -29,3 +29,12 @@ This project appreciates being used in practice but it was also built in a learn
 The databse serves the principle filtering data on input and escaping data on output
 This means data that comes in is validated (filter), but data is only transformed (escape or encode) when sending it as output 
 to another system that requires a specific encoding.
+
+
+### Unresolved Problems
+
+###### API-Level >= 30: Import data to database
+Scoped Storage allows to import database files that were created by the app itself. Files that were exported by the app can be imported.
+But import files that created a user outside the app are not allowed to be imported.
+Works with the permission 'Manage_ALL_Files'. But this permission is most likely not allowed for this app in Google Play Store.
+
