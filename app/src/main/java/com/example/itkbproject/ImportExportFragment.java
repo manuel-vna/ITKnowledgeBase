@@ -1,6 +1,8 @@
 package com.example.itkbproject;
 
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static java.lang.Math.toIntExact;
 import android.Manifest;
 import android.app.Activity;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -172,16 +175,50 @@ public class ImportExportFragment extends Fragment {
         });
     }
 
-
-    private void permission(){
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-
-            // Requesting the permission
-            ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, 101);
+    private boolean checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
         }
-        else {
-            Toast.makeText(getContext(), "Permission 'Read Storage' granted", Toast.LENGTH_SHORT).show();
+    }
+
+    private void requestPermission() {
+
+        /*
+        ActivityResultLauncher<Intent> permissionActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                        }
+                    }
+                });
+
+         */
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s", getContext().getPackageName())));
+                //intent.setDataAndType(Uri.parse(String.format("package:%s", "*/*")));
+                startActivityForResult(intent, 2296);
+                //permissionActivityResultLauncher.launch(intent);
+            } catch (Exception e) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, 2296);
+                //permissionActivityResultLauncher.launch(intent);
+            }
+        } else {
+            //below android 11
+            ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE}, 101);
         }
     }
 
@@ -294,6 +331,11 @@ public class ImportExportFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
+
+                if(checkPermission() == false) {
+                   requestPermission();
+                }
+
                 //Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 Intent data = new Intent(Intent.ACTION_GET_CONTENT);
                 data.addCategory(Intent.CATEGORY_OPENABLE);
@@ -308,13 +350,12 @@ public class ImportExportFragment extends Fragment {
 
 
 
-
     private void exportDb(){
             binding.PopupExportButtonStartExport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                permission();
+               requestPermission();
 
                 binding.ImportExportRadioGroupExportType.setVisibility(View.GONE);
                 binding.PopupExportSwitch.setVisibility(View.GONE);
