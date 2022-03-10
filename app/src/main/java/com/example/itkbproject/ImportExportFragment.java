@@ -4,7 +4,6 @@ package com.example.itkbproject;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static java.lang.Math.toIntExact;
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -61,11 +60,6 @@ public class ImportExportFragment extends Fragment {
     private TextView ViewProgressImport;
     private Double ImportProgressThreshold;
     private Integer androidVersion;
-
-    public static final int PICKFILE_RESULT_CODE = 1;
-    private TextView tvItemPath;
-    private Uri uri;
-    private String filePath;
 
 
 
@@ -175,7 +169,7 @@ public class ImportExportFragment extends Fragment {
         });
     }
 
-    private boolean checkPermission() {
+    private boolean checkImportPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return Environment.isExternalStorageManager();
         } else {
@@ -185,7 +179,7 @@ public class ImportExportFragment extends Fragment {
         }
     }
 
-    private void requestPermission() {
+    private void requestImportPermission() {
 
         /*
         ActivityResultLauncher<Intent> permissionActivityResultLauncher = registerForActivityResult(
@@ -222,6 +216,19 @@ public class ImportExportFragment extends Fragment {
         }
     }
 
+    private boolean checkExportPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return true;
+        } else {
+            int result = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void requestExportPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE}, 101);
+    }
+
 
     private void importDb() {
 
@@ -255,11 +262,9 @@ public class ImportExportFragment extends Fragment {
                             executor.submit(new Runnable() {
                                 public void run() {
 
-
                                     Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
                                     cursor.moveToLast();
                                     LastDbId = cursor.getCount();
-                                    //Log.d("Debug_A", "Database Last Line: "+String.valueOf(cursor.getCount()));
 
                                     try{
                                         inputStream = new Scanner(file);
@@ -269,10 +274,8 @@ public class ImportExportFragment extends Fragment {
                                             String[] values = line.split(";");
                                             lines.add(Arrays.asList(values));
 
-
-
                                             //progressBar
-                                            progressStatusImport += line.getBytes().length; //toIntExact(line.getBytes().length);
+                                            progressStatusImport += line.getBytes().length;
                                             progressBarImport.setProgress(toIntExact(line.getBytes().length));
                                             ViewProgressImport.setText(progressStatusImport+"/"+progressBarImport.getMax()+" Bytes");
                                             ImportProgressThreshold = inputFileSize-((inputFileSize/100.0)*10); // Invisible-Threshold: 90% of max
@@ -281,14 +284,12 @@ public class ImportExportFragment extends Fragment {
                                                 binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
                                             }
 
-
                                             LastDbId += 1;
 
                                             if (Arrays.asList(values).size() < 5){
                                                 Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
                                                 continue;
                                             }
-
 
                                             Entry entry = new Entry(LastDbId,
                                                     Arrays.asList(values).get(0),
@@ -298,19 +299,17 @@ public class ImportExportFragment extends Fragment {
                                                     Arrays.asList(values).get(3),
                                                     Arrays.asList(values).get(4));
 
-                                            //appDb.entryDao().insertEntry(entry);
+                                            appDb.entryDao().insertEntry(entry);
 
-                                            //Log.d("Debug_A", String.valueOf(entry));
-
+                                            /*
                                             try {
                                                 Thread.sleep(2100);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
-
+                                             */
 
                                         }
-
                                         inputStream.close();
                                     }
                                     catch (FileNotFoundException e) {
@@ -320,7 +319,6 @@ public class ImportExportFragment extends Fragment {
                                     }
                                 }
                             });
-
                         }
                     }
                 });
@@ -332,8 +330,8 @@ public class ImportExportFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(checkPermission() == false) {
-                   requestPermission();
+                if(checkImportPermission() == false) {
+                   requestImportPermission();
                 }
 
                 //Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -355,7 +353,9 @@ public class ImportExportFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-               requestPermission();
+                if(checkExportPermission() == false) {
+                    requestExportPermission();
+                }
 
                 binding.ImportExportRadioGroupExportType.setVisibility(View.GONE);
                 binding.PopupExportSwitch.setVisibility(View.GONE);
