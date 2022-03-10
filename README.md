@@ -1,8 +1,7 @@
 # ItKbProject
 IT Knowledge Base Project
 
-
-This apppication provides a simple IT Knowledge Database. Information you don't want to forget can be saved and organised by the usage of five data fields:
+This appplication provides a simple IT Knowledge database. Information you don't want to forget can be saved and organised by the usage of five data fields:
 Title, Category, Subcategory, Description and Source.
 You can save, edit and delete knowledge entries. Searching can be done by a general keyword or within one of the above fields specifically, including a search by the saving date of the entry.
 
@@ -15,8 +14,7 @@ The app was built in a learning context. This means besides its use case it cove
 - #### Saving data in a local database
 Persistence Room library, Dao
 
-- #### Support of different screen sizes 
-Constraint Layout,Guideline
+- #### Support of different screen sizes Constraint Layout,Guideline
 
 - #### Displaying data within the app
 RecyclerView, AutoCompleteTextView, Live Data, Constraint Layout Manager, Landscape Mode
@@ -32,7 +30,6 @@ Data Dinding, View Model, Repository
 
 <br>
 
-
 ### Decisions
 When implementing the app a few decisions were taken that could have resulted elsewhere. Noteworthy decisions are listed here:
 
@@ -43,10 +40,9 @@ to another system that requires a specific encoding.
 
 <br>
 
-
 ### Unresolved Problems
 
-###### API-Level >= 30: Import data to database
+- ##### API-Level >= 30: Import data to database
 Scoped Storage allows to import database files that were created by the app itself. Files that were exported by the app can be imported.
 But import files that created a user outside the app are not allowed to be imported.
 Works with the permission 'Manage_ALL_Files'. But this permission is most likely not allowed for this app in Google Play Store.

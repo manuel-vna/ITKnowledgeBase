@@ -1,13 +1,19 @@
 package com.example.itkbproject;
 
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static java.lang.Math.toIntExact;
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +22,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -45,12 +55,19 @@ public class ImportExportFragment extends Fragment {
     public static String dbName;
     private Integer LastDbId = 0;
     private Scanner inputStream;
-    private Long inputFileSize;
+    private long inputFileSize;
     private ProgressBar progressBarImport;
     private int progressStatusImport = 0;
     private TextView ViewProgressImport;
     private Double ImportProgressThreshold;
     private Integer androidVersion;
+
+    public static final int PICKFILE_RESULT_CODE = 1;
+    private TextView tvItemPath;
+    private Uri uri;
+    private String filePath;
+
+
 
     @Nullable
     @Override
@@ -158,134 +175,175 @@ public class ImportExportFragment extends Fragment {
         });
     }
 
-
-    private void permission(){
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-
-            // Requesting the permission
-            ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, 101);
+    private boolean checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
         }
-        else {
-            Toast.makeText(getContext(), "Permission 'Read Storage' granted", Toast.LENGTH_SHORT).show();
+    }
+
+    private void requestPermission() {
+
+        /*
+        ActivityResultLauncher<Intent> permissionActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                        }
+                    }
+                });
+
+         */
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s", getContext().getPackageName())));
+                //intent.setDataAndType(Uri.parse(String.format("package:%s", "*/*")));
+                startActivityForResult(intent, 2296);
+                //permissionActivityResultLauncher.launch(intent);
+            } catch (Exception e) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, 2296);
+                //permissionActivityResultLauncher.launch(intent);
+            }
+        } else {
+            //below android 11
+            ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE}, 101);
         }
     }
 
 
     private void importDb() {
-        binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        ActivityResultLauncher<Intent> sActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            Uri uri = data.getData();
+
+                            String path_substring = uri.getPath().substring(14);
+                            File file= new File(path_substring);
+
+                            List<List<String>> lines = new ArrayList<>();
+
+                            inputFileSize = file.length();
+                            Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize)));
+
+                            binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
+                            binding.ImportExportProgressTextViewImport.setVisibility(View.VISIBLE);
+
+                            progressBarImport = binding.ImportExportProgressBarImport;
+                            ViewProgressImport = binding.ImportExportProgressTextViewImport;
+
+                            progressBarImport.setMax(toIntExact(inputFileSize));
 
 
-                if (androidVersion  <= 29) {
+                            ExecutorService executor = Executors.newSingleThreadExecutor();
+                            executor.submit(new Runnable() {
+                                public void run() {
 
-                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
 
-                        // Requesting the permission
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
-                    } else {
-                        Toast.makeText(getContext(), "Permission 'Read Storage' granted", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                                    Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
+                                    cursor.moveToLast();
+                                    LastDbId = cursor.getCount();
+                                    //Log.d("Debug_A", "Database Last Line: "+String.valueOf(cursor.getCount()));
 
-                else {
-                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_MEDIA_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                                    try{
+                                        inputStream = new Scanner(file);
 
-                        //ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_MEDIA_LOCATION}, 101);
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_MEDIA_LOCATION}, 101);
-
-                    } else {
-                        Toast.makeText(getContext(), "Permission 'Read Storage' granted", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                                        while(inputStream.hasNext()){
+                                            String line= inputStream.next();
+                                            String[] values = line.split(";");
+                                            lines.add(Arrays.asList(values));
 
 
 
-                binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
-                binding.ImportExportProgressTextViewImport.setVisibility(View.VISIBLE);
-
-                progressBarImport = binding.ImportExportProgressBarImport;
-                ViewProgressImport = binding.ImportExportProgressTextViewImport;
-
-                String pathname = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                pathname += "/db-export3.csv";
-
-                File file= new File(pathname);
-                List<List<String>> lines = new ArrayList<>();
-
-                inputFileSize = file.length();
-                Log.d("Debug_A", "inputFileSize: "+String.valueOf(inputFileSize));
-
-                progressBarImport.setMax(toIntExact(inputFileSize));
+                                            //progressBar
+                                            progressStatusImport += line.getBytes().length; //toIntExact(line.getBytes().length);
+                                            progressBarImport.setProgress(toIntExact(line.getBytes().length));
+                                            ViewProgressImport.setText(progressStatusImport+"/"+progressBarImport.getMax()+" Bytes");
+                                            ImportProgressThreshold = inputFileSize-((inputFileSize/100.0)*10); // Invisible-Threshold: 90% of max
+                                            if (progressStatusImport >= ImportProgressThreshold){
+                                                binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
+                                                binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
+                                            }
 
 
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.submit(new Runnable() {
-                    public void run() {
+                                            LastDbId += 1;
+
+                                            if (Arrays.asList(values).size() < 5){
+                                                Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
+                                                continue;
+                                            }
 
 
-                        Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
-                        cursor.moveToLast();
-                        LastDbId = cursor.getCount();
-                        //Log.d("Debug_A", "Database Last Line: "+String.valueOf(cursor.getCount()));
+                                            Entry entry = new Entry(LastDbId,
+                                                    Arrays.asList(values).get(0),
+                                                    Arrays.asList(values).get(1),
+                                                    String.valueOf(java.time.LocalDate.now()),
+                                                    Arrays.asList(values).get(2),
+                                                    Arrays.asList(values).get(3),
+                                                    Arrays.asList(values).get(4));
 
-                        try{
-                            inputStream = new Scanner(file);
+                                            //appDb.entryDao().insertEntry(entry);
 
-                            while(inputStream.hasNext()){
-                                String line= inputStream.next();
-                                String[] values = line.split(";");
-                                lines.add(Arrays.asList(values));
+                                            //Log.d("Debug_A", String.valueOf(entry));
+
+                                            try {
+                                                Thread.sleep(2100);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
 
 
-                                //progressBar
-                                progressStatusImport += line.getBytes().length; //toIntExact(line.getBytes().length);
-                                progressBarImport.setProgress(toIntExact(line.getBytes().length));
-                                ViewProgressImport.setText(progressStatusImport+"/"+progressBarImport.getMax()+" Bytes");
-                                ImportProgressThreshold = inputFileSize-((inputFileSize/100.0)*10); // Invisible-Threshold: 90% of max
-                                if (progressStatusImport >= ImportProgressThreshold){
-                                    binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
-                                    binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
+                                        }
+
+                                        inputStream.close();
+                                    }
+                                    catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                        Log.d("Debug_A", String.valueOf(e));
+
+                                    }
                                 }
-
-                                LastDbId += 1;
-
-                                if (Arrays.asList(values).size() < 5){
-                                    Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
-                                    continue;
-                                }
-
-
-                                Entry entry = new Entry(LastDbId,
-                                        Arrays.asList(values).get(0),
-                                        Arrays.asList(values).get(1),
-                                        null,
-                                        Arrays.asList(values).get(2),
-                                        Arrays.asList(values).get(3),
-                                        Arrays.asList(values).get(4));
-
-                                appDb.entryDao().insertEntry(entry);
-                                //Log.d("Debug_A", String.valueOf(entry));
-
-                                try {
-                                    Thread.sleep(2100);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-
-                            inputStream.close();
-                        }
-                        catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Log.d("Debug_A", String.valueOf(e));
+                            });
 
                         }
                     }
                 });
+
+
+
+        binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if(checkPermission() == false) {
+                   requestPermission();
+                }
+
+                //Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+                data.addCategory(Intent.CATEGORY_OPENABLE);
+                String [] mimeTypes = {"text/csv", "text/comma-separated-values"};
+                data.setType("*/*");
+                data.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                data = Intent.createChooser(data, "Choose a file");
+                sActivityResultLauncher.launch(data);
             }
         });
     }
@@ -297,7 +355,7 @@ public class ImportExportFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                permission();
+               requestPermission();
 
                 binding.ImportExportRadioGroupExportType.setVisibility(View.GONE);
                 binding.PopupExportSwitch.setVisibility(View.GONE);
