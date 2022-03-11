@@ -49,7 +49,6 @@ public class ImportExportFragment extends Fragment {
 
     private ImportExportFragmentBinding binding;
     EntryDatabase appDb;
-    private String firstColumn;
     public static String packageName;
     public static String dbName;
     private Integer LastDbId = 0;
@@ -94,7 +93,6 @@ public class ImportExportFragment extends Fragment {
         showExportFrame();
         exportDb();
         importDb();
-
         infoBoxes();
     }
 
@@ -334,7 +332,6 @@ public class ImportExportFragment extends Fragment {
                    requestImportPermission();
                 }
 
-                //Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 Intent data = new Intent(Intent.ACTION_GET_CONTENT);
                 data.addCategory(Intent.CATEGORY_OPENABLE);
                 String [] mimeTypes = {"text/csv", "text/comma-separated-values"};
@@ -388,9 +385,6 @@ public class ImportExportFragment extends Fragment {
                                 if (binding.PopupExportSwitch.isChecked()) {
                                     while (cursor.isAfterLast() == false) {
 
-                                        //Log.d("Debug_A", StringEscapeUtils.escapeJson(cursor.getString(cursor.getColumnIndexOrThrow("description"))));
-                                        //Log.d("Debug_A", cursor.getString(cursor.getColumnIndexOrThrow("description")));
-
                                         writer.append(cursor.getString(cursor.getColumnIndexOrThrow("id")) + ";"
                                                 + cursor.getString(cursor.getColumnIndexOrThrow("title")) + ";"
                                                 + cursor.getString(cursor.getColumnIndexOrThrow("category")) + ";"
@@ -438,6 +432,5 @@ public class ImportExportFragment extends Fragment {
             }
         });
     }
-    
 
 }
