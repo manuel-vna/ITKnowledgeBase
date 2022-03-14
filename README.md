@@ -9,20 +9,21 @@ You can save, edit and delete knowledge entries. Searching can be done by a gene
 
 ### Objective
 
-The app was built in a learning context. This means besides its use case it covers specific learning aspects within the world of Android programming which it tires to implement in a good manner by using the latest methods and frameworks. These areas are:
+The app was built in a learning context. This means besides its use case it covers specific learning aspects within the world of Android programming which it tries to implement in a good manner by using the latest methods and frameworks. These are:
 
 - #### Saving data in a local database
 Persistence Room library, Dao
 
-- #### Support of different screen sizes Constraint Layout,Guideline
+- #### Adaptive Layout
+Constraint Layout,Guideline, Landscape Mode
 
-- #### Displaying data within the app
-RecyclerView, AutoCompleteTextView, Live Data, Constraint Layout Manager, Landscape Mode
+- #### Displaying data
+RecyclerView, AutoCompleteTextView, Live Data
 
 - #### Organising a project with fragments
 Navigation
 
-- #### Exchanging data by a custom csv import and expor
+- #### Exchanging data by a custom csv import and export
 Filepicker, User Permission
 
 - #### Seperating data by MVVM
@@ -33,10 +34,16 @@ Data Dinding, View Model, Repository
 ### Decisions
 When implementing the app a few decisions were taken that could have resulted elsewhere. Noteworthy decisions are listed here:
 
-- #### Escaping
+- #### Storing data: Escaping 
 The databse serves the principle filtering data on input and escaping data on output
 This means data that comes in is validated (filter), but data is only transformed (escape or encode) when sending it as output 
 to another system that requires a specific encoding.
+
+- #### Update and delete Entries: Second activity
+An own,second activity is used for deleting and updating databse entries. This activity is called 'UpdateDeleteEntryActivity'.
+An activity-to-activity Intent seems a solid solution for the involved task of transfering data between a RecyclerViewAdapter
+and an Activity. It probably exists a comparable (or even better) solution within one single activity, but wasn't found here.
+
 
 <br>
 
