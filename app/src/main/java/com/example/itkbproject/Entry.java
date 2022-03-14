@@ -5,9 +5,11 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 
 @Entity(tableName = "itkbTable")
-public class Entry {
+public class Entry implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
@@ -68,19 +70,19 @@ public class Entry {
     public void setId() {
         this.id = id;
     }
-    public void setTitle() {
+    public void setTitle(String title) {
         this.title = title;
     }
-    public void setCategory() {
+    public void setCategory(String category) {
         this.category = category;
     }
-    public void setSubcategory() {
+    public void setSubcategory(String subcategory) {
         this.subcategory = subcategory;
     }
-    public void setDescription() {
+    public void setDescription(String description) {
         this.description = description;
     }
-    public void setSource() {
+    public void setSource(String source) {
         this.source = source;
     }
     public void setDate() {

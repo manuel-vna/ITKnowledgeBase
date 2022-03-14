@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -28,6 +29,7 @@ public class MainFragment extends Fragment {
     private MainViewModel mViewModel;
     private MainFragmentBinding binding;
     private EntryAdapter adapter;
+    public FragmentActivity c;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -111,7 +113,8 @@ public class MainFragment extends Fragment {
     }
 
     private void recyclerSetup(){
-        adapter = new EntryAdapter(R.layout.entry_recyclerview_items);
+        c = getActivity();
+        adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
         binding.MainFragmentRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         binding.MainFragmentRecyclerView.setAdapter(adapter);

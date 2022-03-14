@@ -1,5 +1,6 @@
 package com.example.itkbproject;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.content.Context;
@@ -38,6 +39,7 @@ public class ContextSearchFragment extends Fragment {
     private EntryAdapter adapterCategory;
     private EntryAdapter adapterSubcategory;
     private Calendar dateFromCalendar;
+    public FragmentActivity c;
 
     public static ContextSearchFragment newInstance() {
         return new ContextSearchFragment();
@@ -341,7 +343,8 @@ public class ContextSearchFragment extends Fragment {
 
 
     private void recyclerSetup(){
-        adapter = new EntryAdapter(R.layout.entry_recyclerview_items);
+        c = getActivity();
+        adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
         binding.ContextSearchRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         binding.ContextSearchRecyclerView.setAdapter(adapter);

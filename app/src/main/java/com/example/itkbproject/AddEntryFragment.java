@@ -143,7 +143,7 @@ public class AddEntryFragment extends Fragment {
         }
 
         if (category.isEmpty()) {
-            binding.autoCompleteTextViewCategoryAdd.setError("City required");
+            binding.autoCompleteTextViewCategoryAdd.setError("Category required");
             binding.autoCompleteTextViewCategoryAdd.requestFocus();
             return;
         }

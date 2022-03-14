@@ -1,22 +1,26 @@
 package com.example.itkbproject;
 
 
-import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import java.io.Serializable;
 import java.util.List;
+
 
 public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHolder> {
 
+
     private final int entryAdapterLayout;
-    private Context mCtx;
     private List<Entry> entryList;
+    private FragmentActivity c;
 
-
-    public EntryAdapter(int layoutId){
+    public EntryAdapter(FragmentActivity c, int layoutId){
+        this.c = c;
         entryAdapterLayout = layoutId;
     }
 
@@ -26,12 +30,8 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
     }
 
 
-        @Override
+
     public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
-        //LayoutInflater inflater = LayoutInflater.from(mCtx);
-        //View view = inflater.inflate(R.layout.entry_items, null);
-        //return new EntryViewHolder(view);
             View view = LayoutInflater.from(
                     parent.getContext()).inflate(entryAdapterLayout, parent, false);
             return new EntryViewHolder(view);
@@ -59,7 +59,7 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
     }
 
 
-    class EntryViewHolder extends RecyclerView.ViewHolder {
+    class EntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewTitle, textViewCategory, textViewDate, textViewSubcategory, textViewDescription, textViewSource;
 
@@ -72,6 +72,17 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
             textViewSubcategory = itemView.findViewById(R.id.textViewSubcategory);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewSource = itemView.findViewById(R.id.textViewSource);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Entry entry = entryList.get(getAdapterPosition());
+            Intent intent = new Intent(c, UpdateDeleteEntryActivity.class);
+            intent.putExtra("entry", (Serializable) entry);
+            c.startActivity(intent);
         }
     }
 }
