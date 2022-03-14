@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simple KB</string>
+    <string name="app_name">IT Knowledge Base</string>
 
     <string name="textViewHeadline">new entry</string>
     <string name="EditTextTitle">title</string>
