@@ -179,34 +179,16 @@ public class ImportExportFragment extends Fragment {
 
     private void requestImportPermission() {
 
-        /*
-        ActivityResultLauncher<Intent> permissionActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                        }
-                    }
-                });
-
-         */
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                 intent.addCategory("android.intent.category.DEFAULT");
                 intent.setData(Uri.parse(String.format("package:%s", getContext().getPackageName())));
-                //intent.setDataAndType(Uri.parse(String.format("package:%s", "*/*")));
                 startActivityForResult(intent, 2296);
-                //permissionActivityResultLauncher.launch(intent);
             } catch (Exception e) {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
                 startActivityForResult(intent, 2296);
-                //permissionActivityResultLauncher.launch(intent);
             }
         } else {
             //below android 11
@@ -300,6 +282,7 @@ public class ImportExportFragment extends Fragment {
                                             appDb.entryDao().insertEntry(entry);
 
                                             /*
+                                            // for testing the progress bar:
                                             try {
                                                 Thread.sleep(2100);
                                             } catch (InterruptedException e) {
