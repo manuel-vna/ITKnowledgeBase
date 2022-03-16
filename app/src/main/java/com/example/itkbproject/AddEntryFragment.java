@@ -94,8 +94,8 @@ public class AddEntryFragment extends Fragment {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
-                    //if (!Character.isLetterOrDigit(source.charAt(i))) { // Accept only letter & digits ; otherwise just return
-                        Log.d("Debug_A", "AddEntryFragment-Filter: "+String.valueOf(source.charAt(i)));
+
+                    Log.d("Debug_A", "AddEntryFragment-Filter: "+String.valueOf(source.charAt(i)));
                     if(String.valueOf(source.charAt(i)).equals(";")){
                         Toast toast = Toast.makeText(getContext(), "Invalid Input Character", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -105,13 +105,13 @@ public class AddEntryFragment extends Fragment {
                 }
                 return null;
             }
-
         };
-        binding.autoCompleteTextViewTitleAdd.setFilters(new InputFilter[] { filter });
-        binding.autoCompleteTextViewCategoryAdd.setFilters(new InputFilter[] { filter });
-        binding.editTextDescriptionAdd.setFilters(new InputFilter[] { filter });
-        binding.autoCompleteTextViewSubcategoryAdd.setFilters(new InputFilter[] { filter });
-        binding.editTextSourceAdd.setFilters(new InputFilter[] { filter });
+
+        binding.autoCompleteTextViewTitleAdd.setFilters(new InputFilter[] { new InputFilter.LengthFilter(50),filter });
+        binding.autoCompleteTextViewCategoryAdd.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20),filter });
+        binding.editTextDescriptionAdd.setFilters(new InputFilter[] { new InputFilter.LengthFilter(500),filter });
+        binding.autoCompleteTextViewSubcategoryAdd.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20),filter });
+        binding.editTextSourceAdd.setFilters(new InputFilter[] { new InputFilter.LengthFilter(400),filter });
 
     }
 
