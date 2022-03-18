@@ -12,12 +12,8 @@
         android:id="@+id/ContextSearchSpinnerSections"
         android:layout_width="170dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.124"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.026"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSpinner"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -26,68 +22,44 @@
         android:layout_height="48dp"
         android:backgroundTint="@android:color/black"
         android:text="@string/ContextSearchButtonSearch"
-        app:layout_constraintBottom_toTopOf="@+id/ContextSearchRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.912"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.182" />
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSpinner" />
 
     <EditText
         android:id="@+id/ContextSearchTitleEditText"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:hint="@string/ContextSearchTitleEditText"
-        app:layout_constraintBottom_toTopOf="@+id/ContextSearchRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
+
 
     <AutoCompleteTextView
         android:id="@+id/ContextSearchCategoryEditText"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="12dp"
         android:hint="@string/ContextSearchCategoryEditText"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/ContextSearchRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/ContextSearchTitleEditText"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
     <AutoCompleteTextView
         android:id="@+id/ContextSearchSubcategoryEditText"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="12dp"
         android:hint="@string/ContextSearchSubcategoryEditText"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/ContextSearchRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/ContextSearchTitleEditText"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
     <EditText
         android:id="@+id/ContextSearchDescriptionEditText"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:hint="@string/ContextSearchDescriptionEditText"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/ContextSearchRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
     <TextView
         android:id="@+id/ContextSearchTextViewNoOfHits"
@@ -97,52 +69,43 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.725"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ContextSearchButtonSearch"
-        app:layout_constraintVertical_bias="0.041"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineStartDateText"
+        app:layout_constraintEnd_toStartOf="@+id/ContextSearchButtonClear"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ContextSearchButtonClear"
         tools:visibility="visible" />
 
     <Button
         android:id="@+id/ContextSearchButtonClear"
         android:layout_width="88dp"
         android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/ContextSearchButtonClear"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineStartDateText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.136"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ContextSearchRecyclerView"
-        android:layout_width="376dp"
-        android:layout_height="502dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scrollbars="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHomeButton"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineStartDateText" />
 
     <Button
         android:id="@+id/ContextSearchButtonToHome"
         android:layout_width="200dp"
         android:layout_height="48dp"
         android:text="@string/ContextSearchButtonToHome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHomeButton" />
 
     <TextView
         android:id="@+id/ContextSearchTextViewDateFrom"
@@ -152,12 +115,9 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/ContextSearchRecyclerView"
         tools:visibility="visible" />
 
     <DatePicker
@@ -167,12 +127,9 @@
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.329"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineStartDateBlock"
         tools:visibility="visible" />
 
     <TextView
@@ -183,12 +140,9 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.544"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineEndDateText"
         tools:visibility="visible" />
 
     <DatePicker
@@ -198,12 +152,9 @@
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.805"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineEndDateBlock"
         tools:visibility="visible" />
 
     <TextView
@@ -213,13 +164,74 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.177"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.152"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineSearchBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStartDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.23" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStartDateBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.28" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEndDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEndDateBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHomeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.93" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

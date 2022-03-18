@@ -156,7 +156,6 @@ public class ImportExportFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                binding.ImportExportRadioGroupExportType.setVisibility(View.VISIBLE);
                 binding.PopupExportSwitch.setVisibility(View.VISIBLE);
                 binding.ImportExportInfoBoxPrimaryKey.setVisibility(View.VISIBLE);
                 binding.PopupExportEditTextFilename.setVisibility(View.VISIBLE);
@@ -337,7 +336,6 @@ public class ImportExportFragment extends Fragment {
                     requestExportPermission();
                 }
 
-                binding.ImportExportRadioGroupExportType.setVisibility(View.GONE);
                 binding.PopupExportSwitch.setVisibility(View.GONE);
                 binding.ImportExportInfoBoxPrimaryKey.setVisibility(View.GONE);
                 binding.PopupExportEditTextFilename.setVisibility(View.GONE);
@@ -350,65 +348,56 @@ public class ImportExportFragment extends Fragment {
                 executor.submit(new Runnable() {
                     public void run() {
 
+                        Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
+                        cursor.moveToFirst();
 
-                        if (binding.ImportExportRadioButtonCSV.isChecked()) {
+                        String pathname = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+                        try {
+                            File root = new File(pathname);
+                            if (!root.exists()) {
+                                root.mkdirs();
+                            }
+                            File gpxfile = new File(root, binding.PopupExportEditTextFilename.getText().toString()+".csv");
+                            FileWriter writer = new FileWriter(gpxfile);
 
-                            Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
-                            cursor.moveToFirst();
+                            if (binding.PopupExportSwitch.isChecked()) {
+                                while (cursor.isAfterLast() == false) {
 
-                            String pathname = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                            try {
-                                File root = new File(pathname);
-                                if (!root.exists()) {
-                                    root.mkdirs();
+                                    writer.append(cursor.getString(cursor.getColumnIndexOrThrow("id")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("title")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("category")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("subcategory")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("description")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("source"))+"\n");
+                                    cursor.moveToNext();
                                 }
-                                File gpxfile = new File(root, binding.PopupExportEditTextFilename.getText().toString()+".csv");
-                                FileWriter writer = new FileWriter(gpxfile);
+                            }
+                            else {
+                                while (cursor.isAfterLast() == false) {
 
-                                if (binding.PopupExportSwitch.isChecked()) {
-                                    while (cursor.isAfterLast() == false) {
+                                    //Log.d("Debug_A", "Switch: " + String.valueOf(binding.PopupExportSwitch.isChecked()));
 
-                                        writer.append(cursor.getString(cursor.getColumnIndexOrThrow("id")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("title")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("category")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("subcategory")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("description")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("source"))+"\n");
-                                        cursor.moveToNext();
-                                    }
+                                    writer.append(cursor.getString(cursor.getColumnIndexOrThrow("title")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("category")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("subcategory")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("description")) + ";"
+                                            + cursor.getString(cursor.getColumnIndexOrThrow("source"))+"\n");
+                                    cursor.moveToNext();
                                 }
-                                else {
-                                    while (cursor.isAfterLast() == false) {
-
-                                        //Log.d("Debug_A", "Switch: " + String.valueOf(binding.PopupExportSwitch.isChecked()));
-
-                                        writer.append(cursor.getString(cursor.getColumnIndexOrThrow("title")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("category")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("subcategory")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("description")) + ";"
-                                                + cursor.getString(cursor.getColumnIndexOrThrow("source"))+"\n");
-                                        cursor.moveToNext();
-                                    }
-                                }
-
-                                writer.flush();
-                                writer.close();
-                                cursor.close();
-                                appDb.close();
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Log.d("Debug_A", String.valueOf(e));
                             }
 
-                        }
+                            writer.flush();
+                            writer.close();
+                            cursor.close();
+                            appDb.close();
 
-                        if (binding.ImportExportRadioButtonDB.isChecked()) {
-
-                            //TBD
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Log.d("Debug_A", String.valueOf(e));
                         }
 
                     }
+
                 });
                 executor.shutdown();
 

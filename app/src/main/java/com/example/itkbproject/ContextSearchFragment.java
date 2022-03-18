@@ -289,10 +289,10 @@ public class ContextSearchFragment extends Fragment {
 
                 binding.ContextSearchTextViewNoOfHits.setVisibility(View.GONE);
                 binding.ContextSearchButtonClear.setVisibility(View.GONE);
+                binding.ContextSearchTextViewDateChosenTimespan.setVisibility(View.GONE);
                 adapter.setEntryList(Collections.<Entry>emptyList());
             }
         });
-
 
     }
 
