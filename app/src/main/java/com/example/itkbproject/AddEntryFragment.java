@@ -52,10 +52,9 @@ public class AddEntryFragment extends Fragment {
         binding=null;
     }
 
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
         appDb = EntryDatabase.getInstance(getContext());
@@ -86,6 +85,12 @@ public class AddEntryFragment extends Fragment {
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) binding.autoCompleteTextViewCategoryAdd;
                 adapter.getFilter().filter(autoCompleteTextView.getText().toString());
                 autoCompleteTextView.setAdapter(adapter);
+
+                AutoCompleteSubcategoryAdapter adapterSubcategory = new AutoCompleteSubcategoryAdapter(getContext(), entryList);
+                AutoCompleteTextView autoCompleteTextViewSubcategory = (AutoCompleteTextView) binding.autoCompleteTextViewSubcategoryAdd;
+                adapterSubcategory.getFilter().filter(autoCompleteTextViewSubcategory.getText().toString());
+                autoCompleteTextViewSubcategory.setThreshold(3);
+                autoCompleteTextViewSubcategory.setAdapter(adapterSubcategory);
             }
         });
 

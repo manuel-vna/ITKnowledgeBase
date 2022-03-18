@@ -9,8 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.itkbproject.databinding.MainFragmentBinding;
+import android.view.KeyEvent;
 
 import java.util.List;
 
@@ -56,12 +56,11 @@ public class MainFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        setHasOptionsMenu(true);
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         listenerSetup();
@@ -88,7 +87,18 @@ public class MainFragment extends Fragment {
             }
         });
 
+        // ClickListener when pressing enter in search field
+        binding.MainFragmentKeywordSearch.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                mViewModel.findKeyword(binding.MainFragmentKeywordSearch.getText().toString());
+                closeKeyboard();
+                clearFields();
+                return true;
+            }
+        });
     }
+
+
 
     private void observerSetup() {
 
