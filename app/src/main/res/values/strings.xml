@@ -28,6 +28,13 @@
     <string name="MainAddEntryButton">Add Entry</string>
 
 
+    <!-- AddEntryFragment -->
+    <string name="AddEntryButtonAddEntry">Add Entry</string>
+    <string name="AddEntryButtonHome">Home</string>
+    <string name="AddEntryButtonClipboardDescription">Copy desc from clipboard</string>
+    <string name="AddEntryButtonClipboardSource">Copy src from clipboard</string>
+
+
     <!-- ContextSearchFragment -->
     <string name="ContextSearchButtonSearch">Search</string>
     <string name="ContextSearchTitleEditText">title search</string>
@@ -55,7 +62,7 @@
     <string name="ImportExportRadioButtonDB">TBD</string>
 
 
-    <!-- ContextSearchFragment:Sections ??? -->
+    <!-- ContextSearchFragment: Spinner Fields -->
     <string-array name="sections_array">
         <item>Title</item>
         <item>Category</item>

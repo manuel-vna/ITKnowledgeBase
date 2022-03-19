@@ -1,6 +1,10 @@
 package com.example.itkbproject;
 
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -74,6 +78,33 @@ public class AddEntryFragment extends Fragment {
                 saveEntry();
             }
         });
+
+
+        final android.content.ClipboardManager clipboardManager = (ClipboardManager)getActivity().getSystemService(CLIPBOARD_SERVICE);
+        binding.AddEntryButtonClipboardDescription.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ClipData clipData = clipboardManager.getPrimaryClip();
+                ClipData.Item item = clipData.getItemAt(0);
+                String textDescription = item.getText().toString();
+                binding.editTextDescriptionAdd.setText(textDescription);
+            }
+        });
+        binding.AddEntryButtonClipboardSource.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ClipData clipData = clipboardManager.getPrimaryClip();
+                ClipData.Item item = clipData.getItemAt(0);
+                String textSource = item.getText().toString();
+                binding.editTextSourceAdd.setText(textSource);
+            }
+        });
+
+
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mViewModel.getEntryLiveData().observe(this, new Observer<List<Entry>>() {
