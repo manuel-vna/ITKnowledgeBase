@@ -265,10 +265,12 @@ public class ImportExportFragment extends Fragment {
 
                                             LastDbId += 1;
 
+                                            /*
                                             if (Arrays.asList(values).size() < 5){
                                                 Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
                                                 continue;
                                             }
+                                             */
 
                                             Entry entry = new Entry(LastDbId,
                                                     Arrays.asList(values).get(0),
