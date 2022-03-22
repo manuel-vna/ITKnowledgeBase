@@ -18,8 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -44,20 +42,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-
 public class ImportExportFragment extends Fragment {
 
     private ImportExportFragmentBinding binding;
     EntryDatabase appDb;
     public static String packageName;
     public static String dbName;
+    private Integer DbColumnIndex = 0;
     private Integer LastDbId = 0;
     private Scanner inputStream;
     private long inputFileSize;
-    private ProgressBar progressBarImport;
-    private int progressStatusImport = 0;
-    private TextView ViewProgressImport;
-    private Double ImportProgressThreshold;
     private Integer androidVersion;
 
 
@@ -226,15 +220,10 @@ public class ImportExportFragment extends Fragment {
                             List<List<String>> lines = new ArrayList<>();
 
                             inputFileSize = file.length();
-                            Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize)));
+                            Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize))+" Bytes");
 
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
-                            binding.ImportExportProgressTextViewImport.setVisibility(View.VISIBLE);
 
-                            progressBarImport = binding.ImportExportProgressBarImport;
-                            ViewProgressImport = binding.ImportExportProgressTextViewImport;
-
-                            progressBarImport.setMax(toIntExact(inputFileSize));
 
 
                             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -243,34 +232,23 @@ public class ImportExportFragment extends Fragment {
 
                                     Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
                                     cursor.moveToLast();
-                                    LastDbId = cursor.getCount();
+                                    DbColumnIndex = cursor.getColumnIndex("id");
+                                    LastDbId = cursor.getInt (DbColumnIndex);
 
                                     try{
                                         inputStream = new Scanner(file);
 
                                         while(inputStream.hasNext()){
-                                            String line= inputStream.next();
+                                            String line= inputStream.nextLine();
                                             String[] values = line.split(";");
                                             lines.add(Arrays.asList(values));
 
-                                            //progressBar
-                                            progressStatusImport += line.getBytes().length;
-                                            progressBarImport.setProgress(toIntExact(line.getBytes().length));
-                                            ViewProgressImport.setText(progressStatusImport+"/"+progressBarImport.getMax()+" Bytes");
-                                            ImportProgressThreshold = inputFileSize-((inputFileSize/100.0)*10); // Invisible-Threshold: 90% of max
-                                            if (progressStatusImport >= ImportProgressThreshold){
-                                                binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
-                                                binding.ImportExportProgressTextViewImport.setVisibility(View.INVISIBLE);
-                                            }
-
                                             LastDbId += 1;
 
-                                            /*
                                             if (Arrays.asList(values).size() < 5){
                                                 Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
                                                 continue;
                                             }
-                                             */
 
                                             Entry entry = new Entry(LastDbId,
                                                     Arrays.asList(values).get(0),
@@ -280,16 +258,9 @@ public class ImportExportFragment extends Fragment {
                                                     Arrays.asList(values).get(3),
                                                     Arrays.asList(values).get(4));
 
-                                            appDb.entryDao().insertEntry(entry);
+                                            Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
 
-                                            /*
-                                            // for testing the progress bar:
-                                            try {
-                                                Thread.sleep(2100);
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                             */
+                                            //appDb.entryDao().insertEntry(entry);
 
                                         }
                                         inputStream.close();
@@ -301,10 +272,12 @@ public class ImportExportFragment extends Fragment {
                                     }
                                 }
                             });
+
+                            binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getContext(), "CSV imported: "+ inputFileSize*0.001+" KB", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
 
 
         binding.ImportExportButtonImport.setOnClickListener(new View.OnClickListener() {
@@ -325,6 +298,7 @@ public class ImportExportFragment extends Fragment {
                 sActivityResultLauncher.launch(data);
             }
         });
+
     }
 
 
