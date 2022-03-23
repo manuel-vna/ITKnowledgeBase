@@ -87,6 +87,13 @@ public class MainFragment extends Fragment {
             }
         });
 
+        binding.MainFragmentContextSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_contextSearchFragment);
+            }
+        });
+
         // ClickListener when pressing enter in search field
         binding.MainFragmentKeywordSearch.setOnEditorActionListener(new TextView.OnEditorActionListener(){
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

@@ -26,6 +26,7 @@
     <string name="MainSearchButtonSearch">Search</string>
     <string name="MainSearchEditText">search keyword</string>
     <string name="MainAddEntryButton">Add Entry</string>
+    <string name="MainFragmentContextSearch">Advanced</string>
 
 
     <!-- AddEntryFragment -->
