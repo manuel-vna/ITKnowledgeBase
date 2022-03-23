@@ -21,6 +21,9 @@
     <string name="MenuCheckForUpdate">Check for Update</string>
     <string name="MenuImportExport">Import/Export</string>
 
+    <!-- Entry Recyclerview Items -->
+    <string name="EntryRevyclerviewButtonOpenSource">Open Source URL</string>
+
 
     <!-- MainFragment -->
     <string name="MainSearchButtonSearch">Search</string>

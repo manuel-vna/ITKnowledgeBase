@@ -27,37 +27,42 @@
 
     <EditText
         android:id="@+id/ContextSearchTitleEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/ContextSearchTitleEditText"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalMiddle"
         app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
         app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
 
     <AutoCompleteTextView
         android:id="@+id/ContextSearchCategoryEditText"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:hint="@string/ContextSearchCategoryEditText"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@+id/ContextSearchTitleEditText"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalMiddle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
         app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
     <AutoCompleteTextView
         android:id="@+id/ContextSearchSubcategoryEditText"
-        android:layout_width="250dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="@string/ContextSearchSubcategoryEditText"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@+id/ContextSearchTitleEditText"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalMiddle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
         app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
     <EditText
         android:id="@+id/ContextSearchDescriptionEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/ContextSearchDescriptionEditText"
         android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalMiddle"
         app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
         app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar" />
 
@@ -76,14 +81,14 @@
 
     <Button
         android:id="@+id/ContextSearchButtonClear"
-        android:layout_width="88dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/ContextSearchButtonClear"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineStartDateText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -164,8 +169,7 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalRight"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalMiddle"
         app:layout_constraintStart_toStartOf="@+id/guidelineVerticalLeft"
         app:layout_constraintTop_toTopOf="@+id/guidelineSearchBar"
         tools:visibility="visible" />
@@ -176,6 +180,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVerticalRight"
@@ -232,6 +243,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.93" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
