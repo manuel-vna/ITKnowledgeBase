@@ -30,10 +30,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.example.itkbproject.databinding.ImportExportFragmentBinding;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -214,64 +218,98 @@ public class ImportExportFragment extends Fragment {
                             Intent data = result.getData();
                             Uri uri = data.getData();
 
-                            String path_substring = uri.getPath().substring(14);
-                            File file= new File(path_substring);
-
                             List<List<String>> lines = new ArrayList<>();
-
-                            inputFileSize = file.length();
-                            Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize))+" Bytes");
 
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
 
 
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 
-                            ExecutorService executor = Executors.newSingleThreadExecutor();
-                            executor.submit(new Runnable() {
-                                public void run() {
 
-                                    Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
-                                    cursor.moveToLast();
-                                    DbColumnIndex = cursor.getColumnIndex("id");
-                                    LastDbId = cursor.getInt (DbColumnIndex);
+                                try {
 
-                                    try{
-                                        inputStream = new Scanner(file);
+                                        InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+                                        BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 
-                                        while(inputStream.hasNext()){
-                                            String line= inputStream.nextLine();
-                                            String[] values = line.split(";");
-                                            lines.add(Arrays.asList(values));
+                                        String mLine;
+                                        while ((mLine = r.readLine()) != null) {
 
-                                            LastDbId += 1;
-
-                                            if (Arrays.asList(values).size() < 5){
-                                                Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
-                                                continue;
-                                            }
-
-                                            Entry entry = new Entry(LastDbId,
-                                                    Arrays.asList(values).get(0),
-                                                    Arrays.asList(values).get(1),
-                                                    String.valueOf(java.time.LocalDate.now()),
-                                                    Arrays.asList(values).get(2),
-                                                    Arrays.asList(values).get(3),
-                                                    Arrays.asList(values).get(4));
-
-                                            Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
-
-                                            //appDb.entryDao().insertEntry(entry);
+                                            Log.d("Debug_A", "Output: "+mLine);
 
                                         }
-                                        inputStream.close();
-                                    }
-                                    catch (FileNotFoundException e) {
-                                        e.printStackTrace();
-                                        Log.d("Debug_A", String.valueOf(e));
 
-                                    }
+
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
-                            });
+
+
+                            }
+
+                            else {
+
+                                String path_substring =  uri.getPath().substring(14);
+                                File file= new File(path_substring);
+
+                                Log.d("Debug_A", "Path of File 2: "+String.valueOf(uri.getPath()));
+
+                                inputFileSize = file.length();
+                                Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize))+" Bytes");
+
+
+                                ExecutorService executor = Executors.newSingleThreadExecutor();
+                                executor.submit(new Runnable() {
+                                    public void run() {
+
+                                        Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
+                                        cursor.moveToLast();
+                                        DbColumnIndex = cursor.getColumnIndex("id");
+                                        LastDbId = cursor.getInt (DbColumnIndex);
+
+                                        try{
+                                            inputStream = new Scanner(file);
+
+                                            while(inputStream.hasNext()){
+                                                String line= inputStream.nextLine();
+                                                String[] values = line.split(";");
+                                                lines.add(Arrays.asList(values));
+
+                                                LastDbId += 1;
+
+                                                if (Arrays.asList(values).size() < 5){
+                                                    Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
+                                                    continue;
+                                                }
+
+                                                Entry entry = new Entry(LastDbId,
+                                                        Arrays.asList(values).get(0),
+                                                        Arrays.asList(values).get(1),
+                                                        String.valueOf(java.time.LocalDate.now()),
+                                                        Arrays.asList(values).get(2),
+                                                        Arrays.asList(values).get(3),
+                                                        Arrays.asList(values).get(4));
+
+                                                Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
+
+                                                //appDb.entryDao().insertEntry(entry);
+
+                                            }
+                                            inputStream.close();
+                                        }
+                                        catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                            Log.d("Debug_A", String.valueOf(e));
+
+                                        }
+                                    }
+                                });
+
+
+                            }
+
+
 
                             binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
                             Toast.makeText(getContext(), "CSV imported: "+ inputFileSize*0.001+" KB", Toast.LENGTH_SHORT).show();
@@ -285,9 +323,9 @@ public class ImportExportFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(checkImportPermission() == false) {
-                   requestImportPermission();
-                }
+                //if(checkImportPermission() == false) {
+                   //requestImportPermission();
+                //}
 
                 Intent data = new Intent(Intent.ACTION_GET_CONTENT);
                 data.addCategory(Intent.CATEGORY_OPENABLE);
