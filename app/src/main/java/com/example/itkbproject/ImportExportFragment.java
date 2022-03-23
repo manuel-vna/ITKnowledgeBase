@@ -229,11 +229,15 @@ public class ImportExportFragment extends Fragment {
                                 executor.submit(new Runnable() {
                                     public void run() {
 
-                                        Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
-                                        cursor.moveToLast();
-                                        DbColumnIndex = cursor.getColumnIndex("id");
-                                        LastDbId = cursor.getInt (DbColumnIndex);
-
+                                        try {
+                                            Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
+                                            cursor.moveToLast();
+                                            DbColumnIndex = cursor.getColumnIndex("id");
+                                            LastDbId = cursor.getInt(DbColumnIndex);
+                                        }
+                                     catch (Exception e) {
+                                         Log.i("Debug_A", "Database Status: No entries yet");
+                                    }
 
                                         try {
 
@@ -274,6 +278,7 @@ public class ImportExportFragment extends Fragment {
                                     }
                                 });
 
+                                Toast.makeText(getContext(), "Entries added to database", Toast.LENGTH_SHORT).show();
                             }
 
                             else {
