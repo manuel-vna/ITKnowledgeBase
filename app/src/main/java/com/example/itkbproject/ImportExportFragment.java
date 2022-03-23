@@ -209,6 +209,7 @@ public class ImportExportFragment extends Fragment {
 
     private void importDb() {
 
+
         ActivityResultLauncher<Intent> sActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -219,32 +220,59 @@ public class ImportExportFragment extends Fragment {
                             Uri uri = data.getData();
 
                             List<List<String>> lines = new ArrayList<>();
-
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
 
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 
+                                ExecutorService executor = Executors.newSingleThreadExecutor();
+                                executor.submit(new Runnable() {
+                                    public void run() {
 
-                                try {
+                                        Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
+                                        cursor.moveToLast();
+                                        DbColumnIndex = cursor.getColumnIndex("id");
+                                        LastDbId = cursor.getInt (DbColumnIndex);
 
-                                        InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
-                                        BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 
-                                        String mLine;
-                                        while ((mLine = r.readLine()) != null) {
+                                        try {
 
-                                            Log.d("Debug_A", "Output: "+mLine);
+                                                InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+                                                BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 
+                                                String mLine;
+                                                while ((mLine = r.readLine()) != null) {
+
+                                                    String[] values = mLine.split(";");
+                                                    LastDbId += 1;
+
+                                                    if (Arrays.asList(values).size() < 5){
+                                                        Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
+                                                        continue;
+                                                    }
+
+                                                    Entry entry = new Entry(LastDbId,
+                                                            Arrays.asList(values).get(0),
+                                                            Arrays.asList(values).get(1),
+                                                            String.valueOf(java.time.LocalDate.now()),
+                                                            Arrays.asList(values).get(2),
+                                                            Arrays.asList(values).get(3),
+                                                            Arrays.asList(values).get(4));
+
+                                                    Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
+
+                                                    appDb.entryDao().insertEntry(entry);
+
+                                                }
+
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
                                         }
 
-
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
+                                    }
+                                });
 
                             }
 
@@ -293,7 +321,7 @@ public class ImportExportFragment extends Fragment {
 
                                                 Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
 
-                                                //appDb.entryDao().insertEntry(entry);
+                                                appDb.entryDao().insertEntry(entry);
 
                                             }
                                             inputStream.close();
@@ -303,16 +331,15 @@ public class ImportExportFragment extends Fragment {
                                             Log.d("Debug_A", String.valueOf(e));
 
                                         }
+                                        Toast.makeText(getContext(), "CSV imported: "+ inputFileSize*0.001+" KB", Toast.LENGTH_SHORT).show();
                                     }
                                 });
 
 
                             }
 
-
-
                             binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getContext(), "CSV imported: "+ inputFileSize*0.001+" KB", Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
