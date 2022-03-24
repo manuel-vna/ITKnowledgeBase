@@ -131,7 +131,8 @@ public class MainFragment extends Fragment {
 
     private void recyclerSetup(){
         c = getActivity();
-        adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
+        //adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
+        adapter = new EntryAdapter(getContext(),c,R.layout.entry_recyclerview_items);
         binding.MainFragmentRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         binding.MainFragmentRecyclerView.setAdapter(adapter);

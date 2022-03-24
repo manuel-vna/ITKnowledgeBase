@@ -344,7 +344,8 @@ public class ContextSearchFragment extends Fragment {
 
     private void recyclerSetup(){
         c = getActivity();
-        adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
+        //adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
+        adapter = new EntryAdapter(getContext(),c,R.layout.entry_recyclerview_items);
         binding.ContextSearchRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         binding.ContextSearchRecyclerView.setAdapter(adapter);

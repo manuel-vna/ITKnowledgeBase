@@ -1,11 +1,15 @@
 package com.example.itkbproject;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import java.io.Serializable;
@@ -19,7 +23,10 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
     private List<Entry> entryList;
     private FragmentActivity c;
 
-    public EntryAdapter(FragmentActivity c, int layoutId){
+    Context mContext;
+
+    public EntryAdapter(Context context, FragmentActivity c, int layoutId){
+        mContext = context;
         this.c = c;
         entryAdapterLayout = layoutId;
     }
@@ -50,6 +57,8 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
         holder.textViewDescription.setText(String.valueOf(entry.getDescription()));
         holder.textViewSource.setText(String.valueOf(entry.getSource()));
 
+        holder.entry = entry;
+
     }
 
 
@@ -62,6 +71,7 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
     class EntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewTitle, textViewCategory, textViewDate, textViewSubcategory, textViewDescription, textViewSource;
+        Entry entry;
 
         public EntryViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +82,23 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
             textViewSubcategory = itemView.findViewById(R.id.textViewSubcategory);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewSource = itemView.findViewById(R.id.textViewSource);
+
+
+            itemView.findViewById(R.id.EntryRevyclerviewButtonOpenSource).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Log.i("Debug_A", "Clicked Source URL:"+entry.getSource());
+                    try {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(entry.getSource()));
+                        mContext.startActivity(browserIntent);
+                    }
+                    catch (Exception e){
+                        Toast.makeText(mContext,"The URL could not be opened. Please check its format!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
 
             itemView.setOnClickListener(this);
         }
@@ -84,5 +111,6 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
             intent.putExtra("entry", (Serializable) entry);
             c.startActivity(intent);
         }
+
     }
 }
