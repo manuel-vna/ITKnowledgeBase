@@ -222,7 +222,6 @@ public class ImportExportFragment extends Fragment {
                             List<List<String>> lines = new ArrayList<>();
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
 
-
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 
                                 ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -248,7 +247,14 @@ public class ImportExportFragment extends Fragment {
                                                 while ((mLine = r.readLine()) != null) {
 
                                                     String[] values = mLine.split(";");
+
+                                                    // write_entry_to_db(LastDbId,values);
+
                                                     LastDbId += 1;
+
+                                                    //String title = Arrays.asList(values).get(0);
+                                                    //Log.i("Debug_A", "Title: "+title);
+
 
                                                     if (Arrays.asList(values).size() < 5){
                                                         Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
@@ -265,7 +271,7 @@ public class ImportExportFragment extends Fragment {
 
                                                     Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
 
-                                                    appDb.entryDao().insertEntry(entry);
+                                                    //appDb.entryDao().insertEntry(entry);
 
                                                 }
 
