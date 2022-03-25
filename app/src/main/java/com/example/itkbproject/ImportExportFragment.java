@@ -209,7 +209,6 @@ public class ImportExportFragment extends Fragment {
 
     private void importDb() {
 
-
         ActivityResultLauncher<Intent> sActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -219,103 +218,41 @@ public class ImportExportFragment extends Fragment {
                             Intent data = result.getData();
                             Uri uri = data.getData();
 
-                            List<List<String>> lines = new ArrayList<>();
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
 
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            Log.i("Debug_A", "Build Version: "+Build.VERSION.SDK_INT);
 
-                                ExecutorService executor = Executors.newSingleThreadExecutor();
-                                executor.submit(new Runnable() {
-                                    public void run() {
+                            ExecutorService executor = Executors.newSingleThreadExecutor();
+                            executor.submit(new Runnable() {
+                                public void run() {
 
-                                        try {
-                                            Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
-                                            cursor.moveToLast();
-                                            DbColumnIndex = cursor.getColumnIndex("id");
-                                            LastDbId = cursor.getInt(DbColumnIndex);
-                                        }
-                                     catch (Exception e) {
-                                         Log.i("Debug_A", "Database Status: No entries yet");
-                                    }
-
-                                        try {
-
-                                                InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
-                                                BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-
-                                                String mLine;
-                                                while ((mLine = r.readLine()) != null) {
-
-                                                    String[] values = mLine.split(";");
-
-                                                    // write_entry_to_db(LastDbId,values);
-
-                                                    LastDbId += 1;
-
-                                                    //String title = Arrays.asList(values).get(0);
-                                                    //Log.i("Debug_A", "Title: "+title);
-
-
-                                                    if (Arrays.asList(values).size() < 5){
-                                                        Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
-                                                        continue;
-                                                    }
-
-                                                    Entry entry = new Entry(LastDbId,
-                                                            Arrays.asList(values).get(0),
-                                                            Arrays.asList(values).get(1),
-                                                            String.valueOf(java.time.LocalDate.now()),
-                                                            Arrays.asList(values).get(2),
-                                                            Arrays.asList(values).get(3),
-                                                            Arrays.asList(values).get(4));
-
-                                                    Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
-
-                                                    //appDb.entryDao().insertEntry(entry);
-
-                                                }
-
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                });
-
-                                Toast.makeText(getContext(), "Entries added to database", Toast.LENGTH_SHORT).show();
-                            }
-
-                            else {
-
-                                String path_substring =  uri.getPath().substring(14);
-                                File file= new File(path_substring);
-
-                                Log.d("Debug_A", "Path of File 2: "+String.valueOf(uri.getPath()));
-
-                                inputFileSize = file.length();
-                                Log.d("Debug_A", "inputFileSize: "+String.valueOf(toIntExact(inputFileSize))+" Bytes");
-
-
-                                ExecutorService executor = Executors.newSingleThreadExecutor();
-                                executor.submit(new Runnable() {
-                                    public void run() {
-
+                                    try {
                                         Cursor cursor = appDb.entryDao().getAllEntriesasCursor();
                                         cursor.moveToLast();
                                         DbColumnIndex = cursor.getColumnIndex("id");
-                                        LastDbId = cursor.getInt (DbColumnIndex);
+                                        LastDbId = cursor.getInt(DbColumnIndex);
+                                    }
+                                 catch (Exception e) {
+                                     Log.i("Debug_A", "Database Status: No entries yet");
+                                }
 
-                                        try{
-                                            inputStream = new Scanner(file);
+                                    try {
 
-                                            while(inputStream.hasNext()){
-                                                String line= inputStream.nextLine();
-                                                String[] values = line.split(";");
-                                                lines.add(Arrays.asList(values));
+                                            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+                                            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+
+                                            String mLine;
+                                            while ((mLine = r.readLine()) != null) {
+
+                                                String[] values = mLine.split(";");
+
+                                                // write_entry_to_db(LastDbId,values);
 
                                                 LastDbId += 1;
+
+                                                //String title = Arrays.asList(values).get(0);
+                                                //Log.i("Debug_A", "Title: "+title);
+
 
                                                 if (Arrays.asList(values).size() < 5){
                                                     Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
@@ -332,22 +269,20 @@ public class ImportExportFragment extends Fragment {
 
                                                 Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
 
-                                                appDb.entryDao().insertEntry(entry);
+                                                //appDb.entryDao().insertEntry(entry);
 
                                             }
-                                            inputStream.close();
-                                        }
-                                        catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                            Log.d("Debug_A", String.valueOf(e));
 
-                                        }
-                                        Toast.makeText(getContext(), "CSV imported: "+ inputFileSize*0.001+" KB", Toast.LENGTH_SHORT).show();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-                                });
 
+                                }
+                            });
 
-                            }
+                            Toast.makeText(getContext(), "Entries added to database", Toast.LENGTH_SHORT).show();
 
                             binding.ImportExportProgressBarImport.setVisibility(View.INVISIBLE);
 
