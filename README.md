@@ -1,9 +1,9 @@
 # ItKbProject
 IT Knowledge Base Project
 
-This appplication provides a simple IT Knowledge database. Information you don't want to forget can be saved and organised by the usage of five data fields:
+This mobile appplication provides a simple IT Knowledge database. Information you don't want to forget can be saved and organised by the usage of five data fields:
 Title, Category, Subcategory, Description and Source.
-You can save, edit and delete knowledge entries. Searching can be done by a general keyword or within one of the above fields specifically, including a search by the saving date of the entry.
+You can save, edit and delete knowledge entries. Searching can be done by a general keyword or within one of the above fields specifically, including a search by the saving date of the entry. Entries can be imported and exported.
 
 <br>
 
@@ -18,16 +18,16 @@ Persistence Room library, Dao
 Constraint Layout,Guideline, Landscape Mode
 
 - #### Displaying data
-RecyclerView, AutoCompleteTextView, Live Data
+RecyclerView, AutoCompleteTextView, Live Data, ActionBar
 
-- #### Organising a project with fragments
-Navigation
+- #### Organising a project with activities and fragments
+Intent, Navigation
 
 - #### Exchanging data by a custom csv import and export
-Filepicker, User Permission
+Filepicker, User Permission, Scoped Storage
 
 - #### Seperating data by MVVM
-Data Dinding, View Model, Repository
+Data Binding, View Model, Repository
 
 <br>
 
@@ -44,12 +44,5 @@ An own,second activity is used for deleting and updating databse entries. This a
 An activity-to-activity Intent seems a solid solution for the involved task of transfering data between a RecyclerViewAdapter
 and an Activity. It probably exists a comparable (or even better) solution within one single activity, but wasn't found here.
 
-
 <br>
 
-### Unresolved Problems
-
-- ##### API-Level >= 30: Import data to database
-Scoped Storage allows to import database files that were created by the app itself. Files that were exported by the app can be imported.
-But import files that created a user outside the app are not allowed to be imported.
-Works with the permission 'Manage_ALL_Files'. But this permission is most likely not allowed for this app in Google Play Store.
