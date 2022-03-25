@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IT Knowledge Base</string>
+    <string name="app_name">IT KB</string>
 
     <string name="textViewHeadline">new entry</string>
     <string name="EditTextTitle">title</string>
@@ -16,9 +16,8 @@
 
 
     <!-- Menu -->
-    <string name="MenuContextSearch">Search within Context</string>
+    <string name="MenuContextSearch">Advanced Search</string>
     <string name="MenuAddEntry">Add Entry</string>
-    <string name="MenuCheckForUpdate">Check for Update</string>
     <string name="MenuImportExport">Import/Export</string>
 
     <!-- Entry Recyclerview Items -->

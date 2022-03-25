@@ -58,6 +58,13 @@ public class ImportExportFragment extends Fragment {
     private long inputFileSize;
     private Integer androidVersion;
 
+    private Integer TitleMax = 50;
+    private Integer CategoryMax = 20;
+    private Integer SubcategoryMax = 20;
+    private Integer DescriptionMax = 500;
+    private Integer SourceMax = 400;
+
+
 
 
     @Nullable
@@ -220,8 +227,6 @@ public class ImportExportFragment extends Fragment {
 
                             binding.ImportExportProgressBarImport.setVisibility(View.VISIBLE);
 
-                            Log.i("Debug_A", "Build Version: "+Build.VERSION.SDK_INT);
-
                             ExecutorService executor = Executors.newSingleThreadExecutor();
                             executor.submit(new Runnable() {
                                 public void run() {
@@ -237,7 +242,6 @@ public class ImportExportFragment extends Fragment {
                                 }
 
                                     try {
-
                                             InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
                                             BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -246,30 +250,36 @@ public class ImportExportFragment extends Fragment {
 
                                                 String[] values = mLine.split(";");
 
-                                                // write_entry_to_db(LastDbId,values);
-
-                                                LastDbId += 1;
-
-                                                //String title = Arrays.asList(values).get(0);
-                                                //Log.i("Debug_A", "Title: "+title);
-
-
+                                                Log.i("Debug_A","Column Number: "+Arrays.asList(values).size());
+                                                //checking if there are less than the five necessary columns
                                                 if (Arrays.asList(values).size() < 5){
-                                                    Log.d("Debug_A", "Not enough values in line "+Arrays.asList(values).get(0));
+                                                    Log.d("Debug_A", "Not enough columns in line: "+values[0]);
                                                     continue;
                                                 }
 
+                                                LastDbId += 1;
+
+                                                //check via ternary operator the length of input and cut it if too long
+                                                String title = values[0].length() <= TitleMax ? values[0] : values[0].substring(0, TitleMax);
+                                                String category = values[1].length() <= CategoryMax ? values[1] : values[1].substring(0, CategoryMax);
+                                                String subcategory = values[2].length() <= SubcategoryMax ? values[2] : values[2].substring(0, SubcategoryMax);
+                                                String description = values[3].length() <= DescriptionMax ? values[3] : values[3].substring(0, SubcategoryMax);
+                                                String source = values[4].length() <= SourceMax ? values[4] : values[4].substring(0, SourceMax);
+                                                Log.i("Debug_A","Value via String[]: "+source);
+
+
+                                                // creating entry object
                                                 Entry entry = new Entry(LastDbId,
-                                                        Arrays.asList(values).get(0),
-                                                        Arrays.asList(values).get(1),
+                                                        title,
+                                                        category,
                                                         String.valueOf(java.time.LocalDate.now()),
-                                                        Arrays.asList(values).get(2),
-                                                        Arrays.asList(values).get(3),
-                                                        Arrays.asList(values).get(4));
+                                                        subcategory,
+                                                        description,
+                                                        source
+                                                        );
 
-                                                Log.i("Debug_A", "Title: "+String.valueOf(Arrays.asList(values).get(0)));
-
-                                                //appDb.entryDao().insertEntry(entry);
+                                                // inserting entry object into database
+                                                appDb.entryDao().insertEntry(entry);
 
                                             }
 
