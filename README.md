@@ -1,4 +1,4 @@
-# ItKbProject
+# ITKnowledgeBase
 IT Knowledge Base Project
 
 This mobile appplication provides a simple IT Knowledge database. Information you don't want to forget can be saved and organised by the usage of five data fields:
