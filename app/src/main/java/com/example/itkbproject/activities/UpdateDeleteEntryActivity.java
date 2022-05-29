@@ -1,10 +1,14 @@
-package com.example.itkbproject;
+package com.example.itkbproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.models.EntryDatabase;
+import com.example.itkbproject.R;
 import com.example.itkbproject.databinding.UpdateDeleteEntryBinding;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

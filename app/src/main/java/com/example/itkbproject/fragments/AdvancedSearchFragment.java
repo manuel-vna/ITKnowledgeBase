@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.fragments;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -23,6 +23,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.itkbproject.adapters.AutoCompleteCategoryAdapter;
+import com.example.itkbproject.adapters.AutoCompleteSubcategoryAdapter;
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.adapters.EntryAdapter;
+import com.example.itkbproject.models.MainViewModel;
+import com.example.itkbproject.R;
 import com.example.itkbproject.databinding.ContextsearchFragmentBinding;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class ContextSearchFragment extends Fragment {
+public class AdvancedSearchFragment extends Fragment {
 
     private MainViewModel mViewModel;
     private ContextsearchFragmentBinding binding;
@@ -41,8 +48,8 @@ public class ContextSearchFragment extends Fragment {
     private Calendar dateFromCalendar;
     public FragmentActivity c;
 
-    public static ContextSearchFragment newInstance() {
-        return new ContextSearchFragment();
+    public static AdvancedSearchFragment newInstance() {
+        return new AdvancedSearchFragment();
     }
 
     @Nullable
@@ -345,7 +352,7 @@ public class ContextSearchFragment extends Fragment {
     private void recyclerSetup(){
         c = getActivity();
         //adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
-        adapter = new EntryAdapter(getContext(),c,R.layout.entry_recyclerview_items);
+        adapter = new EntryAdapter(getContext(),c,R.layout.entry_items_recyclerview);
         binding.ContextSearchRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         binding.ContextSearchRecyclerView.setAdapter(adapter);

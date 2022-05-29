@@ -1,9 +1,9 @@
-package com.example.itkbproject;
+package com.example.itkbproject.fragments;
 
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static java.lang.Math.toIntExact;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +29,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.models.EntryDatabase;
+import com.example.itkbproject.R;
 import com.example.itkbproject.databinding.ImportExportFragmentBinding;
 
 import java.io.BufferedReader;
@@ -38,9 +42,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

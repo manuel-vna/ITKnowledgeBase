@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.models;
 
 import android.database.Cursor;
 
@@ -8,6 +8,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.itkbproject.Entry;
+
 import java.util.List;
 
 @Dao

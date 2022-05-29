@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.fragments;
 
 
 import android.content.Context;
@@ -18,6 +18,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.models.MainViewModel;
+import com.example.itkbproject.R;
+import com.example.itkbproject.adapters.EntryAdapter;
 import com.example.itkbproject.databinding.MainFragmentBinding;
 import android.view.KeyEvent;
 
@@ -132,7 +137,7 @@ public class MainFragment extends Fragment {
     private void recyclerSetup(){
         c = getActivity();
         //adapter = new EntryAdapter(c,R.layout.entry_recyclerview_items);
-        adapter = new EntryAdapter(getContext(),c,R.layout.entry_recyclerview_items);
+        adapter = new EntryAdapter(getContext(),c,R.layout.entry_items_recyclerview);
         binding.MainFragmentRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         binding.MainFragmentRecyclerView.setAdapter(adapter);

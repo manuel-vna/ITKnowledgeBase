@@ -1,12 +1,14 @@
-package com.example.itkbproject;
+package com.example.itkbproject.models;
 
 import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.itkbproject.Entry;
 
-@Database(entities=Entry.class, exportSchema = false, version = 1)
+
+@Database(entities= Entry.class, exportSchema = false, version = 1)
 public abstract class EntryDatabase extends RoomDatabase {
 
     public static final String DB_NAME = "itkbDB";

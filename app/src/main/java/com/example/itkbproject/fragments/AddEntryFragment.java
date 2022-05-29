@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.fragments;
 
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -25,6 +25,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
+import com.example.itkbproject.adapters.AutoCompleteCategoryAdapter;
+import com.example.itkbproject.adapters.AutoCompleteSubcategoryAdapter;
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.models.EntryDatabase;
+import com.example.itkbproject.models.MainViewModel;
+import com.example.itkbproject.R;
 import com.example.itkbproject.databinding.AddEntryBinding;
 import java.util.List;
 import java.util.concurrent.ExecutorService;

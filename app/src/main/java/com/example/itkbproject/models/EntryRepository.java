@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.models;
 
 import android.app.Application;
 import android.os.Handler;
@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.os.Message;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.itkbproject.Entry;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

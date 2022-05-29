@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.adapters;
 
 
 import android.content.Context;
@@ -12,6 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.R;
+import com.example.itkbproject.activities.UpdateDeleteEntryActivity;
+
 import java.io.Serializable;
 import java.util.List;
 

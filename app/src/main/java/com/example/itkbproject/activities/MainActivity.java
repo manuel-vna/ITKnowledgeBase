@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.activities;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.AutoCompleteTextView;
 
+import com.example.itkbproject.models.EntryDatabase;
+import com.example.itkbproject.R;
 
 
 public class MainActivity extends AppCompatActivity { //implements SubcategorySearchFragment.OnFragmentInteractionListener {

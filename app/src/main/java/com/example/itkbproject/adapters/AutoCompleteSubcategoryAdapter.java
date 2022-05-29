@@ -1,4 +1,4 @@
-package com.example.itkbproject;
+package com.example.itkbproject.adapters;
 
 
 import android.content.Context;
@@ -10,16 +10,20 @@ import android.widget.Filter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.itkbproject.Entry;
+import com.example.itkbproject.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AutoCompleteCategoryAdapter extends ArrayAdapter<Entry> {
+public class AutoCompleteSubcategoryAdapter extends ArrayAdapter<Entry> {
     private List<Entry> allEntrysList;
     private List<Entry> filteredEntrysList;
-    private List<String> filteredListOfCategories; //used to avoid duplicates in the suggestions array
+    private List<String> filteredListOfSubcategories; //used to avoid duplicates in the suggestions array
 
-    public AutoCompleteCategoryAdapter(@NonNull Context context, @NonNull List<Entry> entryList) {
+    public AutoCompleteSubcategoryAdapter(@NonNull Context context, @NonNull List<Entry> entryList) {
         super(context, 0, entryList);
 
         allEntrysList = new ArrayList<>(entryList);
@@ -45,7 +49,7 @@ public class AutoCompleteCategoryAdapter extends ArrayAdapter<Entry> {
 
         Entry entry = getItem(position);
         if (entry != null) {
-            entryLabel.setText(entry.getCategory());
+            entryLabel.setText(entry.getSubcategory());
         }
 
         return convertView;
@@ -57,18 +61,18 @@ public class AutoCompleteCategoryAdapter extends ArrayAdapter<Entry> {
             FilterResults results = new FilterResults();
 
             filteredEntrysList = new ArrayList<>();
-            filteredListOfCategories = new ArrayList<String>();
+            filteredListOfSubcategories = new ArrayList<String>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredEntrysList.addAll(allEntrysList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (Entry entry: allEntrysList) {
-                    if (entry.getCategory().toLowerCase().contains(filterPattern)) {
+                    if (entry.getSubcategory().toLowerCase().contains(filterPattern)) {
 
-                        if (!filteredListOfCategories.contains(entry.getCategory().toLowerCase())) {
+                        if (!filteredListOfSubcategories.contains(entry.getSubcategory().toLowerCase())) {
                             filteredEntrysList.add(entry);
-                            filteredListOfCategories.add(entry.getCategory().toLowerCase());
+                            filteredListOfSubcategories.add(entry.getSubcategory().toLowerCase());
                         }
                     }
                 }
@@ -88,7 +92,7 @@ public class AutoCompleteCategoryAdapter extends ArrayAdapter<Entry> {
 
         @Override
         public CharSequence convertResultToString(Object resultValue) {
-            return ((Entry) resultValue).getCategory();
+            return ((Entry) resultValue).getSubcategory();
         }
     };
 }

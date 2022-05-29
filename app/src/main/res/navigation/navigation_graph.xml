@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addEntryFragment"
-        android:name="com.example.itkbproject.AddEntryFragment"
+        android:name="com.example.itkbproject.fragments.AddEntryFragment"
         android:label="AddEntryFragment" >
         <action
             android:id="@+id/action_addEntryFragment_to_contextSearchFragment"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/contextSearchFragment"
-        android:name="com.example.itkbproject.ContextSearchFragment"
+        android:name="com.example.itkbproject.fragments.AdvancedSearchFragment"
         android:label="ContextSearchFragment" >
         <action
             android:id="@+id/action_contextSearchFragment_to_addEntryFragment"
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.itkbproject.MainFragment"
+        android:name="com.example.itkbproject.fragments.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_addEntryFragment"
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/importExportFragment"
-        android:name="com.example.itkbproject.ImportExportFragment"
+        android:name="com.example.itkbproject.fragments.ImportExportFragment"
         android:label="ImportExportFragment" >
         <action
             android:id="@+id/action_importExportFragment_to_mainFragment"

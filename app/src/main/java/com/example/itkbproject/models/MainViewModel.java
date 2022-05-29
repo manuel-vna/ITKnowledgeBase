@@ -1,6 +1,4 @@
-package com.example.itkbproject;
-
-import androidx.lifecycle.ViewModel;
+package com.example.itkbproject.models;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
@@ -8,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.itkbproject.Entry;
-import com.example.itkbproject.EntryRepository;
+import com.example.itkbproject.models.EntryRepository;
 
 import java.util.List;
 
