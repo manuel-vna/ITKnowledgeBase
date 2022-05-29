@@ -25,14 +25,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
 import com.example.itkbproject.adapters.AutoCompleteCategoryAdapter;
 import com.example.itkbproject.adapters.AutoCompleteSubcategoryAdapter;
 import com.example.itkbproject.Entry;
 import com.example.itkbproject.models.EntryDatabase;
 import com.example.itkbproject.models.MainViewModel;
 import com.example.itkbproject.R;
-import com.example.itkbproject.databinding.AddEntryBinding;
+import com.example.itkbproject.databinding.AddEntryFragmentBinding;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,7 +40,7 @@ import java.util.concurrent.Executors;
 
 public class AddEntryFragment extends Fragment {
 
-    private AddEntryBinding binding;
+    private AddEntryFragmentBinding binding;
     EntryDatabase appDb;
     private MainViewModel mViewModel;
 
@@ -51,7 +50,7 @@ public class AddEntryFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
-        binding = AddEntryBinding.inflate(inflater,container,false);
+        binding = AddEntryFragmentBinding.inflate(inflater,container,false);
         return binding.getRoot();
 
 

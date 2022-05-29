@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.itkbproject.Entry;
 import com.example.itkbproject.models.EntryDatabase;
 import com.example.itkbproject.R;
-import com.example.itkbproject.databinding.UpdateDeleteEntryBinding;
+import com.example.itkbproject.databinding.UpdateDeleteEntryActivityBinding;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,14 +17,14 @@ import java.util.concurrent.Executors;
 public class UpdateDeleteEntryActivity extends AppCompatActivity {
 
     EntryDatabase appDb;
-    private UpdateDeleteEntryBinding binding;
+    private UpdateDeleteEntryActivityBinding binding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = UpdateDeleteEntryBinding.inflate(getLayoutInflater());
+        binding = UpdateDeleteEntryActivityBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
