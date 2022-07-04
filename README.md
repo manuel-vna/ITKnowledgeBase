@@ -1,6 +1,8 @@
 # ITKnowledgeBase
 
 <br>
+Project status: In Progress
+<br>
 
 ### Description
 
@@ -30,7 +32,6 @@ Filepicker, User Permission, Scoped Storage
 
 Fragments are included in Activities. Navigation between those works via Intents and a Fragment Navigation Graph (res/layout/navigation_graph.xml)
 The app uses the MVVM desgin approach: UI Views - ViewModel + LiveData - Repository - Data Source
-Detailed information on the structure can be found in the UMl file: project/itkb.uml
 
 <br>
 
@@ -38,7 +39,7 @@ Detailed information on the structure can be found in the UMl file: project/itkb
 When implementing the app a few decisions were taken that could have resulted elsewhere. Noteworthy decisions are listed here:
 
 - #### Storing data: Escaping 
-The databse serves the principle filtering data on input and escaping data on output
+The database serves the principle of filtering data on input and escaping data on output
 This means data that comes in is validated (filter), but data is only transformed (escape or encode) when sending it as output 
 to another system that requires a specific encoding.
 
